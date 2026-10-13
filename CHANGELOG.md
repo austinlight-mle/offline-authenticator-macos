@@ -12,6 +12,8 @@
   Google, Gmail, Chrome, Google Play, YouTube and Microsoft use their full color logos
 - macOS shows onboarding inline instead of in a sheet (the sheet collapsed in the narrow window
   and blocked Quit while presented)
+- Biometric lock on macOS: the lock screen now replaces the code list (and its toolbar) until
+  Touch ID succeeds, with an Unlock button to retry, and every new launch starts locked
 - Settings no longer shows Proton service items (Pass banner, Sync via Proton, Discover Proton,
   Tell a friend / Rate, Report an issue); the macOS Settings sheet has a Close button and all
   macOS sheets and the main window are narrower (window 340 pt by default, 300 to 480 pt)

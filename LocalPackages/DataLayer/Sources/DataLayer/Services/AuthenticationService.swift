@@ -66,7 +66,17 @@ public final class AuthenticationService: AuthenticationServicing {
         do {
             if let keychainValue: AuthenticationState = try keychain
                 .get(keyId: AppConstants.Settings.authenticationState, isSynced: false) {
+                #if os(macOS)
+                // A quit on macOS does not always reach the reset in the scene phase handler, so a
+                // fresh process must never start in the authenticated state.
+                if case .active = keychainValue {
+                    currentState = .active(authenticated: false)
+                } else {
+                    currentState = keychainValue
+                }
+                #else
                 currentState = keychainValue
+                #endif
             }
         } catch KeychainError.invalidData, KeychainError.itemNotFound {
             self.logger.log(.info, category: .data, "AuthenticationState not init. Use default value.")

@@ -96,15 +96,34 @@ enum MacWindowLayout {
 #endif
 
 private extension MainContentView {
+    var entries: some View {
+        EntriesView()
+            .accessibilityHidden(!viewModel.showEntries)
+            .preferredColorScheme(viewModel.theme.preferredColorScheme)
+            .onOpenURL { url in
+                viewModel.handleDeepLink(url)
+            }
+    }
+
     var mainContainer: some View {
         Group {
             if viewModel.onboarded {
-                EntriesView()
-                    .accessibilityHidden(!viewModel.showEntries)
-                    .preferredColorScheme(viewModel.theme.preferredColorScheme)
-                    .onOpenURL { url in
-                        viewModel.handleDeepLink(url)
-                    }
+                #if os(macOS)
+                // There is no UIKit window to cover on macOS, so the lock screen replaces the list
+                // (toolbar included) until the biometric check succeeds. The button lets the user
+                // retry after cancelling Touch ID.
+                if viewModel.showEntries {
+                    entries
+                } else {
+                    BioLockView(manualUnlock: true, onUnlock: viewModel.checkBiometrics)
+                        .preferredColorScheme(viewModel.theme.preferredColorScheme)
+                        .onOpenURL { url in
+                            viewModel.handleDeepLink(url)
+                        }
+                }
+                #else
+                entries
+                #endif
             } else {
                 #if os(macOS)
                 // On macOS the onboarding is shown inline: a non dismissable sheet collapses to its
