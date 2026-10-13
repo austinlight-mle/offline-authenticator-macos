@@ -8,7 +8,8 @@
 - Groups: create, rename, recolor, reorder and delete groups, move codes between groups from
   their menu, filter the list with the new group bar and pick a group when creating a code
 - Icons: 260+ bundled brand icons (Simple Icons, CC0) used offline for well known issuers, plus
-  per code icon overrides (brand icon, SF Symbol with color, or a picture from your files)
+  per code icon overrides (brand icon, SF Symbol with color, or a picture from your files);
+  Google, Gmail, Chrome, Google Play, YouTube and Microsoft use their full color logos
 - macOS shows onboarding inline instead of in a sheet (the sheet collapsed in the narrow window
   and blocked Quit while presented)
 - Settings no longer shows Proton service items (Pass banner, Sync via Proton, Discover Proton,
