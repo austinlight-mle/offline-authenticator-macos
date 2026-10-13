@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!--
+	Entitlements for the native macOS build. Only capabilities that work with
+	ad-hoc ("Sign to Run Locally") signing are listed, so the app can be built and
+	run from Xcode without a paid developer team. iCloud, App Groups, keychain
+	sharing, Autofill and push are intentionally left out: they require a
+	provisioning profile and are not needed for the offline use case.
+	-->
+	<key>com.apple.security.app-sandbox</key>
+	<true/>
+	<key>com.apple.security.network.client</key>
+	<true/>
+	<key>com.apple.security.files.user-selected.read-write</key>
+	<true/>
+	<key>com.apple.security.files.bookmarks.app-scope</key>
+	<true/>
+</dict>
+</plist>

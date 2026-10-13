@@ -1,22 +1,22 @@
 //
 // LocalDataManager.swift
-// Proton Authenticator - Created on 03/06/2025.
+// Altosec Authenticator - Created on 03/06/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
-// This file is part of Proton Authenticator.
+// This file is part of Altosec Authenticator.
 //
-// Proton Authenticator is free software: you can redistribute it and/or modify
+// Altosec Authenticator is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Proton Authenticator is distributed in the hope that it will be useful,
+// Altosec Authenticator is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Proton Authenticator. If not, see https://www.gnu.org/licenses/.
+// along with Altosec Authenticator. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
 import Models
@@ -50,22 +50,28 @@ public actor LocalDataManager: LocalDataManagerProtocol {
 private extension LocalDataManager {
     static func createPersistenceService(iCloudSyncEnabled: Bool) -> PersistenceService {
         let cloudKitDatabase: ModelConfiguration
-            .CloudKitDatabase = iCloudSyncEnabled ? .private("iCloud.me.proton.authenticator") : .none
+            .CloudKitDatabase = iCloudSyncEnabled ? .private("iCloud.me.altosec.authenticator") : .none
         do {
             if #available(iOS 18, *) {
                 let entryConfig = ModelConfiguration(schema: Schema([EncryptedEntryEntity.self]),
                                                      isStoredInMemoryOnly: false,
                                                      cloudKitDatabase: cloudKitDatabase)
+                // Groups and entry customizations are device local metadata, so they live in the
+                // non CloudKit store next to logs and user data.
                 let localDataConfig = ModelConfiguration("localData",
                                                          schema: Schema([
                                                              LogEntryEntity.self,
-                                                             EncryptedUserDataEntity.self
+                                                             EncryptedUserDataEntity.self,
+                                                             EntryGroupEntity.self,
+                                                             EntryMetadataEntity.self
                                                          ]),
                                                          isStoredInMemoryOnly: false,
                                                          cloudKitDatabase: .none)
                 return try PersistenceService(for: EncryptedEntryEntity.self,
                                               LogEntryEntity.self,
                                               EncryptedUserDataEntity.self,
+                                              EntryGroupEntity.self,
+                                              EntryMetadataEntity.self,
                                               configurations: entryConfig,
                                               localDataConfig)
             } else {
@@ -73,7 +79,9 @@ private extension LocalDataManager {
                 let allInOneConfig = ModelConfiguration(schema: Schema([
                     EncryptedEntryEntity.self,
                     LogEntryEntity.self,
-                    EncryptedUserDataEntity.self
+                    EncryptedUserDataEntity.self,
+                    EntryGroupEntity.self,
+                    EntryMetadataEntity.self
                 ]),
                 isStoredInMemoryOnly: false,
                 cloudKitDatabase: .none)
@@ -81,6 +89,8 @@ private extension LocalDataManager {
                 return try PersistenceService(for: EncryptedEntryEntity.self,
                                               LogEntryEntity.self,
                                               EncryptedUserDataEntity.self,
+                                              EntryGroupEntity.self,
+                                              EntryMetadataEntity.self,
                                               configurations: allInOneConfig)
             }
         } catch {

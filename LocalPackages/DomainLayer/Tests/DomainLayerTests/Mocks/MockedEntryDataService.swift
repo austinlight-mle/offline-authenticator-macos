@@ -1,22 +1,22 @@
 //
 // MockedEntryDataService.swift
-// Proton Authenticator - Created on 17/06/2025.
+// Altosec Authenticator - Created on 17/06/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
-// This file is part of Proton Authenticator.
+// This file is part of Altosec Authenticator.
 //
-// Proton Authenticator is free software: you can redistribute it and/or modify
+// Altosec Authenticator is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Proton Authenticator is distributed in the hope that it will be useful,
+// Altosec Authenticator is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Proton Authenticator. If not, see https://www.gnu.org/licenses/.
+// along with Altosec Authenticator. If not, see https://www.gnu.org/licenses/.
 //
 
 import DataLayer
@@ -29,6 +29,7 @@ final class MockedEntryDataService: EntryDataServiceProtocol {
     init() {}
 
     var dataState: DataState<[EntryUiModel]> = .loading
+    var groups: [EntryGroup] = []
 
     func getEntry(from uri: String) async throws -> Entry {
         .init(id: "",
@@ -43,9 +44,21 @@ final class MockedEntryDataService: EntryDataServiceProtocol {
     
     func insertAndRefreshEntry(from uri: String) async throws {}
     
-    func insertAndRefreshEntry(from params: EntryParameters) async throws {}
+    func insertAndRefreshEntry(from params: EntryParameters, customization: EntryCustomization?) async throws {}
     
-    func updateAndRefreshEntry(for entryId: String, with params: EntryParameters) async throws {}
+    func updateAndRefreshEntry(for entryId: String,
+                               with params: EntryParameters,
+                               customization: EntryCustomization?) async throws {}
+
+    func setCustomization(_ customization: EntryCustomization, for entryId: String) async throws {}
+
+    func setGroup(_ groupId: String?, for entryIds: [String]) async throws {}
+
+    func saveGroup(_ group: EntryGroup) async throws {}
+
+    func deleteGroup(_ groupId: String) async throws {}
+
+    func reorderGroups(_ groups: [EntryGroup]) async throws {}
     
     func insertAndRefresh(entry: Entry) async throws {}
     

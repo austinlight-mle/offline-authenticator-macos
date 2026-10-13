@@ -1,22 +1,22 @@
 //
 // AppConstants.swift
-// Proton Authenticator - Created on 11/02/2025.
+// Altosec Authenticator - Created on 11/02/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
-// This file is part of Proton Authenticator.
+// This file is part of Altosec Authenticator.
 //
-// Proton Authenticator is free software: you can redistribute it and/or modify
+// Altosec Authenticator is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Proton Authenticator is distributed in the hope that it will be useful,
+// Altosec Authenticator is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Proton Authenticator. If not, see https://www.gnu.org/licenses/.
+// along with Altosec Authenticator. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
 import LocalAuthentication
@@ -37,11 +37,11 @@ nonisolated(unsafe) public let kSharedUserDefaults: UserDefaults = {
 public enum AppConstants: Sendable {
     public static let appID = "6741758667"
     public static let teamId = "2SB5Z68H26"
-    public static let service = "me.proton.authenticator"
-    public static let accessGroup = "group.me.proton.authenticator"
+    public static let service = "me.altosec.authenticator"
+    public static let accessGroup = "group.me.altosec.authenticator"
     public static let keychainGroup = "\(teamId).\(accessGroup)"
     public static let maxFileSizeInBytes = 10 * 1_024 * 1_024 // 10 MB
-    public static let icloudContainerIdentifier = "iCloud.me.proton.authenticator"
+    public static let icloudContainerIdentifier = "iCloud.me.altosec.authenticator"
 
     public enum AppStore {
         /// Used to open the app on App Store when force upgrading
@@ -83,8 +83,8 @@ public enum AppConstants: Sendable {
     }
 
     public enum FileBackup {
-        public static let backupFileNamePrefix = "Proton_Authenticator_backup_"
-        public static let backupSubfolderName = "Proton Authenticator"
+        public static let backupFileNamePrefix = "Altosec_Authenticator_backup_"
+        public static let backupSubfolderName = "Altosec Authenticator"
     }
 
     public enum NetworkSettings {
@@ -122,6 +122,15 @@ public enum AppConstants: Sendable {
 
     public static var isIOS: Bool {
         #if os(iOS)
+        true
+        #else
+        false
+        #endif
+    }
+
+    /// `true` when running as a native macOS app (not an iOS app on Apple silicon).
+    public static var isMacOS: Bool {
+        #if os(macOS)
         true
         #else
         false

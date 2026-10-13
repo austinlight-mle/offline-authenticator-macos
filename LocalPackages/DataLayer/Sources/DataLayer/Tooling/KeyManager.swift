@@ -1,28 +1,29 @@
 //
 // KeyManager.swift
-// Proton Authenticator - Created on 30/04/2025.
+// Altosec Authenticator - Created on 30/04/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
-// This file is part of Proton Authenticator.
+// This file is part of Altosec Authenticator.
 //
-// Proton Authenticator is free software: you can redistribute it and/or modify
+// Altosec Authenticator is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Proton Authenticator is distributed in the hope that it will be useful,
+// Altosec Authenticator is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Proton Authenticator. If not, see https://www.gnu.org/licenses/.
+// along with Altosec Authenticator. If not, see https://www.gnu.org/licenses/.
 
 import CommonUtilities
 import CryptoKit
 import Foundation
 import Models
 @preconcurrency import ProtonCoreKeymaker
+import Security
 
 public protocol KeysProvider: Sendable {
     func getSymmetricKey() throws -> SymmetricKey
@@ -42,6 +43,40 @@ public protocol MainKeyProvider: Sendable, AnyObject {
     var mainKey: MainKey? { get }
 }
 
+#if os(macOS)
+/// Native macOS builds keep the main key in the app's encrypted local vault instead of relying on
+/// Proton Core's `Keymaker`, whose keychain items would prompt for access on every launch.
+/// The key is stored under the same account name `Keymaker` used, so vaults migrated from the
+/// keychain keep unlocking the existing symmetric key.
+final class LocalMainKeyProvider: MainKeyProvider, @unchecked Sendable {
+    private static let account = "NoneProtection"
+    private static let length = 32
+    private let lock = NSLock()
+    private var cached: MainKey?
+
+    private var storeKey: String { LocalSecretStore.key(service: AppConstants.service, account: Self.account) }
+
+    var mainKey: MainKey? {
+        lock.withLock {
+            if let cached {
+                return cached
+            }
+            if let data = LocalSecretStore.shared.data(forKey: storeKey), data.count == Self.length {
+                cached = [UInt8](data)
+                return cached
+            }
+            guard let random = try? Data.random(byteCount: Self.length) else { return nil }
+            do {
+                try LocalSecretStore.shared.set(random, forKey: storeKey)
+            } catch {
+                return nil
+            }
+            cached = [UInt8](random)
+            return cached
+        }
+    }
+}
+#else
 extension Keymaker: @unchecked @retroactive Sendable, MainKeyProvider {
     override public convenience init() {
         let keychain = CoreKeychain()
@@ -52,7 +87,7 @@ extension Keymaker: @unchecked @retroactive Sendable, MainKeyProvider {
 
 final class CoreKeychain: Keychain, @unchecked Sendable {
     init() {
-        super.init(service: "me.proton.authenticator", accessGroup: AppConstants.keychainGroup)
+        super.init(service: "me.altosec.authenticator", accessGroup: AppConstants.keychainGroup)
     }
 }
 
@@ -75,6 +110,7 @@ extension CoreKeychain: SettingsProvider {
         }
     }
 }
+#endif
 
 public final class KeysManager: KeysProvider {
     private let keychain: any KeychainServicing
@@ -82,9 +118,17 @@ public final class KeysManager: KeysProvider {
     private let keychainKey = "SymmetricKey"
 
     public init(keychain: any KeychainServicing,
-                keyMaker: any MainKeyProvider = Keymaker()) {
+                keyMaker: any MainKeyProvider = KeysManager.defaultMainKeyProvider()) {
         self.keychain = keychain
         self.keyMaker = keyMaker
+    }
+
+    public static func defaultMainKeyProvider() -> any MainKeyProvider {
+        #if os(macOS)
+        LocalMainKeyProvider()
+        #else
+        Keymaker()
+        #endif
     }
 
     public func getSymmetricKey() throws -> SymmetricKey {

@@ -1,24 +1,25 @@
 //
 // CreateEditEntryView.swift
-// Proton Authenticator - Created on 10/02/2025.
+// Altosec Authenticator - Created on 10/02/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
-// This file is part of Proton Authenticator.
+// This file is part of Altosec Authenticator.
 //
-// Proton Authenticator is free software: you can redistribute it and/or modify
+// Altosec Authenticator is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Proton Authenticator is distributed in the hope that it will be useful,
+// Altosec Authenticator is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Proton Authenticator. If not, see https://www.gnu.org/licenses/.
+// along with Altosec Authenticator. If not, see https://www.gnu.org/licenses/.
 //
 
+import CommonUtilities
 import FactoryKit
 import Models
 import SwiftUI
@@ -48,12 +49,13 @@ struct CreateEditEntryView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var viewModel: CreateEditEntryViewModel
     @State private var showAdvanceOptions = false
+    @State private var showIconPicker = false
     @FocusState private var focusedField: FocusableField?
 
     private let requestForReview = resolve(\UseCaseContainer.requestForReview)
 
-    init(entry: EntryUiModel?) {
-        _viewModel = .init(wrappedValue: CreateEditEntryViewModel(entry: entry))
+    init(entry: EntryUiModel?, initialGroupId: String? = nil) {
+        _viewModel = .init(wrappedValue: CreateEditEntryViewModel(entry: entry, initialGroupId: initialGroupId))
     }
 
     var body: some View {
@@ -65,6 +67,7 @@ struct CreateEditEntryView: View {
                                               binding: $viewModel.name,
                                               field: .name))
 
+                    #if os(iOS)
                     if #available(iOS 18, *) {
                         textField(secretFieldConfig)
                     } else {
@@ -74,12 +77,21 @@ struct CreateEditEntryView: View {
                                                   field: .secret,
                                                   capitalization: .characters))
                     }
+                    #else
+                    textField(secretFieldConfig)
+                    #endif
 
                     if viewModel.type == .totp {
                         textField(TextFieldConfig(title: "Issuer",
                                                   placeholder: "Issuer",
                                                   binding: $viewModel.issuer,
                                                   field: .issuer))
+                    }
+
+                    iconRow
+
+                    if !viewModel.groups.isEmpty {
+                        groupRow
                     }
 
                     if showAdvanceOptions {
@@ -123,10 +135,128 @@ struct CreateEditEntryView: View {
                     viewModel.trimInputs()
                 }
                 .showSpinner(viewModel.saving)
+                .sheet(isPresented: $showIconPicker) {
+                    IconPickerView(current: viewModel.icon,
+                                   issuerInfo: viewModel.previewIssuerInfo,
+                                   letter: viewModel.previewLetter) { icon in
+                        viewModel.icon = icon
+                    }
+                    .resizableSheet()
+                }
         }
         #if os(macOS)
-        .frame(minWidth: 800, minHeight: 600)
+        .fontScaled()
+        .frame(minWidth: 300, idealWidth: 320, maxWidth: 360, minHeight: 460, idealHeight: 540)
         #endif
+    }
+
+    /// Row showing the icon used for the entry, tap to override it.
+    private var iconRow: some View {
+        Button {
+            focusedField = nil
+            showIconPicker = true
+        } label: {
+            HStack(spacing: 12) {
+                EntryIconView(icon: ResolvedEntryIcon.resolve(override: viewModel.icon,
+                                                              issuerInfo: viewModel.previewIssuerInfo,
+                                                              letter: viewModel.previewLetter,
+                                                              catalog: ToolsContainer.shared.brandIconCatalog()),
+                              size: 36,
+                              cornerRadius: 9)
+                    .equatable()
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Icon", bundle: .module)
+                        .foregroundStyle(.textNorm)
+                        .dynamicFont(size: 12, textStyle: .caption1)
+                    Text(viewModel.icon == nil ? "Automatic" : "Custom", bundle: .module)
+                        .foregroundStyle(.textWeak)
+                        .dynamicFont(size: 16, textStyle: .callout)
+                }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .foregroundStyle(.textWeak)
+                    .accessibilityHidden(true)
+            }
+            .padding(16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(.inputBackground)
+            .clipShape(.rect(cornerRadius: 16))
+            .overlay(RoundedRectangle(cornerRadius: 16)
+                .inset(by: 0.5)
+                .stroke(.inputBorder, lineWidth: 1))
+            .contentShape(.rect)
+        }
+        .buttonStyle(.plain)
+        .padding(.horizontal, 16)
+        .accessibilityLabel(Text("Icon", bundle: .module))
+    }
+
+    /// Row selecting the group the entry belongs to.
+    private var groupRow: some View {
+        HStack(spacing: 12) {
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Group", bundle: .module)
+                    .foregroundStyle(.textNorm)
+                    .dynamicFont(size: 12, textStyle: .caption1)
+                if let group = viewModel.selectedGroup {
+                    Label {
+                        Text(verbatim: group.name)
+                    } icon: {
+                        Image(systemName: group.symbolName)
+                            .foregroundStyle(group.colorHex.flatMap { Color(hex: $0) } ?? .purpleInteraction)
+                    }
+                    .foregroundStyle(.textNorm)
+                    .dynamicFont(size: 16, textStyle: .callout)
+                } else {
+                    Text("No group", bundle: .module)
+                        .foregroundStyle(.textWeak)
+                        .dynamicFont(size: 16, textStyle: .callout)
+                }
+            }
+            Spacer()
+            Menu {
+                Button {
+                    viewModel.groupId = nil
+                } label: {
+                    if viewModel.groupId == nil {
+                        Label("No group", systemImage: "checkmark")
+                    } else {
+                        Text("No group", bundle: .module)
+                    }
+                }
+                Divider()
+                ForEach(viewModel.groups) { group in
+                    Button {
+                        viewModel.groupId = group.id
+                    } label: {
+                        if viewModel.groupId == group.id {
+                            Label(group.name, systemImage: "checkmark")
+                        } else {
+                            Label(group.name, systemImage: group.symbolName)
+                        }
+                    }
+                }
+            } label: {
+                HStack(spacing: 4) {
+                    Text("Change", bundle: .module)
+                    Image(systemName: "chevron.up.chevron.down")
+                }
+                .foregroundStyle(.purpleInteraction)
+                .dynamicFont(size: 15, textStyle: .subheadline, weight: .medium)
+            }
+            #if os(macOS)
+            .menuStyle(.borderlessButton)
+            #endif
+            .fixedSize()
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(.inputBackground)
+        .clipShape(.rect(cornerRadius: 16))
+        .overlay(RoundedRectangle(cornerRadius: 16)
+            .inset(by: 0.5)
+            .stroke(.inputBorder, lineWidth: 1))
+        .padding(.horizontal, 16)
     }
 
     private func textField(_ config: TextFieldConfig) -> some View {
@@ -271,7 +401,7 @@ private extension CreateEditEntryView {
                     .foregroundStyle(.textNorm)
             })
             .padding()
-            .background(Color(.secondarySystemGroupedBackground))
+            .background(Color.dropdownBackground)
             .clipShape(.capsule)
         } else {
             HStack(alignment: .center, spacing: 8) {
@@ -321,7 +451,7 @@ private extension CreateEditEntryView {
                        content: {
                            ForEach(data, id: \.self) { type in
                                Text(verbatim: "\(type.rawValue)".uppercased())
-                                   .font(.title)
+                                   .font(AppConstants.isMacOS ? .body : .title)
                                    .fontWeight(.semibold)
                                    .foregroundStyle(.textNorm)
                            }

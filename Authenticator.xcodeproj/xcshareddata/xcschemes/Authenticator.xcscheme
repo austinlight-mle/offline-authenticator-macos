@@ -256,12 +256,12 @@
       </BuildableProductRunnable>
       <EnvironmentVariables>
          <EnvironmentVariable
-            key = "me.proton.Authenticator.SentryDebug"
+            key = "me.altosec.Authenticator.SentryDebug"
             value = "1"
             isEnabled = "NO">
          </EnvironmentVariable>
          <EnvironmentVariable
-            key = "me.proton.Authenticator.NetworkDebug"
+            key = "me.altosec.Authenticator.NetworkDebug"
             value = "1"
             isEnabled = "NO">
          </EnvironmentVariable>

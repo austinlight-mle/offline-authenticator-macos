@@ -1,5 +1,5 @@
-# Proton Authenticator
-This repository contains the source code for the Proton Authenticator application. 
+# Altosec Authenticator
+This repository contains the source code for the Altosec Authenticator application. 
 
 * [Installation](#installation)
 * [Technical Choices](#technical-choices)
@@ -22,6 +22,58 @@ This repository contains the source code for the Proton Authenticator applicatio
 # Installation
 
 The app targets iOS 18 and above. Make sure you have Xcode 16+ installed, check out the repo and open `Authenticator.xcodeproj` to run the project.
+
+## Running natively on macOS (fork)
+
+This fork adds a native macOS destination to the `Authenticator` target, with a narrow window
+that lists codes one per line, groups and bundled brand icons (see [CHANGELOG](CHANGELOG.md)).
+
+1. If you have never used the Xcode command line tools on this Mac, accept the license once:
+   `sudo xcodebuild -license accept && sudo xcodebuild -runFirstLaunch`.
+2. Open `Authenticator.xcodeproj`, select the `Authenticator` scheme and the **My Mac** destination.
+3. Build and run (Debug). The macOS Debug configuration uses *Sign to Run Locally* and the
+   reduced `Authenticator/App/Authenticator-macOS.entitlements` (sandbox, network, user selected
+   files), so it works without a paid developer team. iCloud sync, keychain sharing and the
+   Autofill extension are iOS only.
+
+Or from the terminal, which leaves the app in `dist/Altosec Authenticator.app`:
+
+```bash
+./build-macos.sh            # Debug, signed to run locally
+./build-macos.sh Release    # needs a signing team selected in Xcode
+```
+
+The Rust core (`LocalPackages/AuthenticatorRustCore`) is downloaded by the scheme's pre-build
+script and already ships a `macos-arm64` slice.
+
+Notes for locally signed builds:
+
+* The macOS app does not use the keychain. Every *Sign to Run Locally* build has a new ad-hoc
+  signature, so keychain items would ask "Authenticator wants to use your confidential
+  information" at each launch after a rebuild. Instead the main key, the symmetric key, the
+  device identifier and the other small secrets live in an AES-GCM encrypted vault in the app's
+  sandbox container (`Library/Application Support/Altosec Authenticator/Vault`). The vault key is
+  wrapped with a key derived from this Mac's hardware UUID and the files are readable only by your
+  user. Items from an earlier keychain based build are imported once (macOS asks one last time)
+  and then removed from the keychain. The iOS app keeps using the keychain.
+* Xcode 27 / Swift 6.4: the published `SimpleToast` versions fail to compile, so the library is
+  vendored with a one line fix in `LocalPackages/SimpleToast` (see its README).
+* `Info.plist` sets `LSEnvironment GODEBUG=asyncpreemptoff=1` for macOS: the Go runtime bundled in
+  Proton Core's `GoLibs` occasionally aborted at launch ("non-Go code disabled sigaltstack") when
+  its preemption signal hit a non-Go thread. The setting is ignored on iOS.
+
+### Groups and icons
+
+* Groups live in the **group bar** above the list (tap the folder icon, or Settings → Groups, to
+  manage them). Codes can be moved to a group from their context menu or when editing them.
+* Icons are chosen automatically from the issuer: a bundled brand icon when one matches (works
+  offline), otherwise the issuer favicon, otherwise the first letter. Use **Change icon** on a code
+  (or the Icon row when editing it) to pick another brand, an SF Symbol with a color, or a picture.
+* Both are stored locally in SwiftData (`EntryGroupEntity`, `EntryMetadataEntity`) and are never
+  part of the encrypted entry payload, so sync, backups and import/export keep working unchanged.
+* Brand icons come from [Simple Icons](https://simpleicons.org) (CC0 1.0). The catalog is
+  `LocalPackages/DataLayer/Sources/DataLayer/Resources/BrandIcons.json`; the SVG assets are in
+  `PresentationLayer/Resources/Icons.xcassets/BrandIcons`.
 
 # Technical Choices
 

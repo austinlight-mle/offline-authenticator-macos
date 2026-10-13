@@ -76,3 +76,6 @@ xcuserdata/
 
 tmp/
 LocalPackages/AuthenticatorRustCore
+
+# Local build output (see build-macos.sh)
+dist/

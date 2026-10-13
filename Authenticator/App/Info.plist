@@ -2,15 +2,15 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>APP_VERSION_IDENTIFIER =
-	<string>$(APP_VERSION_IDENTIFIER =
+	<key>APP_VERSION_IDENTIFIER</key>
+	<string>$(APP_VERSION_IDENTIFIER)</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
 			<key>CFBundleURLName</key>
-			<string>me.proton.authenticator</string>
+			<string>me.altosec.authenticator</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>otpauth</string>
@@ -19,8 +19,18 @@
 	</array>
 	<key>GIT_COMMIT_HASH</key>
 	<string></string>
-	<key>IS_QA_BUILD =
-	<string>$(IS_QA_BUILD =
+	<key>IS_QA_BUILD</key>
+	<string>$(IS_QA_BUILD)</string>
+	<!--
+	macOS only (ignored on iOS): the Go runtime inside Proton Core's GoLibs occasionally aborts at
+	launch with "non-Go code disabled sigaltstack" when its SIGURG preemption signal lands on a
+	thread it does not own. Disabling asynchronous preemption avoids that signal entirely.
+	-->
+	<key>LSEnvironment</key>
+	<dict>
+		<key>GODEBUG</key>
+		<string>asyncpreemptoff=1</string>
+	</dict>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>protonpass</string>
@@ -40,12 +50,12 @@
 	</array>
 	<key>NSUbiquitousContainers</key>
 	<dict>
-		<key>iCloud.me.proton.authenticator</key>
+		<key>iCloud.me.altosec.authenticator</key>
 		<dict>
 			<key>NSUbiquitousContainerIsDocumentScopePublic</key>
 			<true/>
 			<key>NSUbiquitousContainerName</key>
-			<string>Proton Authenticator</string>
+			<string>Altosec Authenticator</string>
 			<key>NSUbiquitousContainerSupportedFolderLevels</key>
 			<string>None</string>
 		</dict>
@@ -70,7 +80,7 @@
 			<key>UTTypeIcons</key>
 			<dict/>
 			<key>UTTypeIdentifier</key>
-			<string>me.proton.2fas</string>
+			<string>me.altosec.2fas</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>

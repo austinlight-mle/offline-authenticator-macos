@@ -1,22 +1,22 @@
 //
 // AuthenticatorApp.swift
-// Proton Authenticator - Created on 12/02/2025.
+// Altosec Authenticator - Created on 12/02/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
-// This file is part of Proton Authenticator.
+// This file is part of Altosec Authenticator.
 //
-// Proton Authenticator is free software: you can redistribute it and/or modify
+// Altosec Authenticator is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Proton Authenticator is distributed in the hope that it will be useful,
+// Altosec Authenticator is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Proton Authenticator. If not, see https://www.gnu.org/licenses/.
+// along with Altosec Authenticator. If not, see https://www.gnu.org/licenses/.
 
 import Combine
 import CommonUtilities
@@ -47,10 +47,11 @@ struct AuthenticatorApp: App {
         }
 
         #if os(macOS)
-        .windowResizability(.contentMinSize)
+        // Narrow, phone-like window: entries are listed one per line.
+        .windowResizability(.contentSize)
         .windowToolbarStyle(.expanded)
         .windowStyle(.titleBar)
-        .defaultSize(width: 800, height: 600)
+        .defaultSize(width: MacWindowLayout.defaultWidth, height: MacWindowLayout.defaultHeight)
         #endif
 
         #if os(macOS)
@@ -70,8 +71,29 @@ struct MainContentView: View {
             .onChange(of: viewModel.theme) { _, _ in
                 viewModel.updateWindowUserInterfaceStyle()
             }
+        #if os(macOS)
+            .fontScaled()
+            .frame(minWidth: MacWindowLayout.minWidth,
+                   idealWidth: MacWindowLayout.defaultWidth,
+                   maxWidth: MacWindowLayout.maxWidth,
+                   minHeight: MacWindowLayout.minHeight,
+                   idealHeight: MacWindowLayout.defaultHeight,
+                   maxHeight: .infinity)
+        #endif
     }
 }
+
+#if os(macOS)
+/// Window metrics for the native macOS app. The width is deliberately capped so the list
+/// stays a single narrow column, similar to the phone layout.
+enum MacWindowLayout {
+    static let minWidth: CGFloat = 320
+    static let defaultWidth: CGFloat = 370
+    static let maxWidth: CGFloat = 480
+    static let minHeight: CGFloat = 440
+    static let defaultHeight: CGFloat = 550
+}
+#endif
 
 private extension MainContentView {
     var mainContainer: some View {
@@ -84,19 +106,28 @@ private extension MainContentView {
                         viewModel.handleDeepLink(url)
                     }
             } else {
+                #if os(macOS)
+                // On macOS the onboarding is shown inline: a non dismissable sheet collapses to its
+                // intrinsic height in the narrow window and blocks Quit while it is presented.
+                OnboardingView()
+                    .sheetAlertService()
+                #else
                 EmptyView()
                     .fullScreenMainBackground()
+                #endif
             }
         }
         .task {
             await viewModel.setUpFirstRun()
         }
+        #if !os(macOS)
         .adaptiveSheet(isPresented: .constant(!viewModel.onboarded),
                        isFullScreen: AppConstants.isPhone) {
             OnboardingView()
                 .interactiveDismissDisabled()
                 .sheetAlertService()
         }
+        #endif
         .animation(.default, value: viewModel.onboarded)
         .animation(.default, value: viewModel.showEntries)
         .onAppear {

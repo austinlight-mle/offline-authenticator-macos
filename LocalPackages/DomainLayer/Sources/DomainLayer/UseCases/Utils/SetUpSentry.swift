@@ -1,23 +1,23 @@
 //
 //
 // SetUpSentry.swift
-// Proton Authenticator - Created on 18/04/2025.
+// Altosec Authenticator - Created on 18/04/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
-// This file is part of Proton Authenticator.
+// This file is part of Altosec Authenticator.
 //
-// Proton Authenticator is free software: you can redistribute it and/or modify
+// Altosec Authenticator is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Proton Authenticator is distributed in the hope that it will be useful,
+// Altosec Authenticator is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Proton Authenticator. If not, see https://www.gnu.org/licenses/.
+// along with Altosec Authenticator. If not, see https://www.gnu.org/licenses/.
 //
 
 import DataLayer
@@ -43,8 +43,10 @@ public struct SetUpSentry: SetUpSentryUseCase {
             options.releaseName = bundle.fullAppVersionName
             options.environment = doh?.environment.name ?? "production"
             options.tracesSampleRate = 0.5
+            #if os(iOS)
             options.attachScreenshot = false
             options.attachViewHierarchy = false
+            #endif
 
             #if DEBUG
             options.debug = true
@@ -58,7 +60,9 @@ public struct SetUpSentry: SetUpSentryUseCase {
 
             if ProcessInfo.processInfo.isiOSAppOnMac {
                 options.enableAutoPerformanceTracing = false
+                #if os(iOS)
                 options.enableUserInteractionTracing = false
+                #endif
                 options.enableSwizzling = false
             }
         }

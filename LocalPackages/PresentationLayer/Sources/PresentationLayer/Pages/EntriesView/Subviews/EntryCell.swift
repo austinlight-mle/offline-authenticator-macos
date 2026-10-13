@@ -1,22 +1,22 @@
 //
 // EntryCell.swift
-// Proton Authenticator - Created on 11/02/2025.
+// Altosec Authenticator - Created on 11/02/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
-// This file is part of Proton Authenticator.
+// This file is part of Altosec Authenticator.
 //
-// Proton Authenticator is free software: you can redistribute it and/or modify
+// Altosec Authenticator is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Proton Authenticator is distributed in the hope that it will be useful,
+// Altosec Authenticator is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Proton Authenticator. If not, see https://www.gnu.org/licenses/.
+// along with Altosec Authenticator. If not, see https://www.gnu.org/licenses/.
 
 import CommonUtilities
 import Models
@@ -79,6 +79,7 @@ struct EntryCell: View, Equatable {
     let searchTerm: String
     let isHovered: Bool
     let reducedShadow: Bool
+    let groups: [EntryGroup]
     let onAction: (EntryAction) -> Void
     @Binding var animatingEntryAction: EntryAction?
 
@@ -87,6 +88,7 @@ struct EntryCell: View, Equatable {
          searchTerm: String,
          isHovered: Bool,
          reducedShadow: Bool,
+         groups: [EntryGroup] = [],
          onAction: @escaping (EntryAction) -> Void,
          animatingEntryAction: Binding<EntryAction?>) {
         self.entry = entry
@@ -94,6 +96,7 @@ struct EntryCell: View, Equatable {
         self.searchTerm = searchTerm
         self.isHovered = isHovered
         self.reducedShadow = reducedShadow
+        self.groups = groups
         self.onAction = onAction
         _animatingEntryAction = animatingEntryAction
     }
@@ -163,6 +166,7 @@ struct EntryCell: View, Equatable {
             lhs.searchTerm == rhs.searchTerm &&
             lhs.configuration == rhs.configuration &&
             lhs.isHovered == rhs.isHovered &&
+            lhs.groups == rhs.groups &&
             lhs.animatingEntryAction == rhs.animatingEntryAction
     }
 
@@ -176,8 +180,7 @@ private extension EntryCell {
     var mainContent: some View {
         VStack(spacing: 0) {
             HStack(spacing: 10) {
-                EntryThumbnail(iconUrl: entry.issuerInfo?.iconUrl,
-                               letter: entry.orderedEntry.entry.capitalLetter)
+                EntryThumbnail(entry: entry)
                     .equatable()
 
                 VStack(alignment: .leading) {
@@ -203,7 +206,7 @@ private extension EntryCell {
 
                 if isHovered {
                     Menu(content: {
-                        EntryOptions(entry: entry, onAction: { onAction($0) })
+                        EntryOptions(entry: entry, groups: groups, onAction: { onAction($0) })
                     }, label: {
                         Image(systemName: "ellipsis.circle")
                             .dynamicFont(size: 18)
@@ -281,6 +284,7 @@ private extension EntryCell {
 
 struct EntryOptions: View {
     let entry: EntryUiModel
+    var groups: [EntryGroup] = []
     let onAction: (EntryAction) -> Void
 
     var body: some View {
@@ -294,6 +298,35 @@ struct EntryOptions: View {
 
         Button(action: { onAction(.edit(entry)) },
                label: { Label("Edit", systemImage: "pencil") })
+
+        Button(action: { onAction(.changeIcon(entry)) },
+               label: { Label("Change icon", systemImage: "photo") })
+
+        if !groups.isEmpty {
+            Menu {
+                Button(action: { onAction(.moveToGroup(entry, nil)) },
+                       label: {
+                           if entry.groupId == nil {
+                               Label("No group", systemImage: "checkmark")
+                           } else {
+                               Text("No group", bundle: .module)
+                           }
+                       })
+                Divider()
+                ForEach(groups) { group in
+                    Button(action: { onAction(.moveToGroup(entry, group.id)) },
+                           label: {
+                               if entry.groupId == group.id {
+                                   Label(group.name, systemImage: "checkmark")
+                               } else {
+                                   Label(group.name, systemImage: group.symbolName)
+                               }
+                           })
+                }
+            } label: {
+                Label("Move to group", systemImage: "folder")
+            }
+        }
 
         Divider()
 
@@ -331,6 +364,8 @@ private struct CodeView: View, @preconcurrency Equatable {
                 Text(verbatim: entry.code.displayedCode(for: .next, config: configuration))
                     .dynamicFont(size: 15, textStyle: .subheadline, weight: .semibold)
                     .monospaced()
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
                     .foregroundStyle(nextColor)
                     .textShadow()
             }

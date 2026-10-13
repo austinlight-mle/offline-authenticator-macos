@@ -1,22 +1,22 @@
 //
 // CurrentTokenView.swift
-// Proton Authenticator - Created on 27/06/2025.
+// Altosec Authenticator - Created on 27/06/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
-// This file is part of Proton Authenticator.
+// This file is part of Altosec Authenticator.
 //
-// Proton Authenticator is free software: you can redistribute it and/or modify
+// Altosec Authenticator is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Proton Authenticator is distributed in the hope that it will be useful,
+// Altosec Authenticator is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Proton Authenticator. If not, see https://www.gnu.org/licenses/.
+// along with Altosec Authenticator. If not, see https://www.gnu.org/licenses/.
 
 import Models
 import SwiftUI
@@ -56,6 +56,8 @@ private extension CurrentTokenView {
                 .dynamicFont(size: 30, textStyle: .title1, weight: .semibold)
                 .kerning(3)
                 .monospaced()
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
                 .foregroundStyle(textColor)
                 .textShadow()
         }
@@ -63,12 +65,13 @@ private extension CurrentTokenView {
 }
 
 private struct BoxedDigit: View {
+    @Environment(\.fontScale) private var fontScale
     let char: Character
     let codeCount: Int
     let textColor: Color
 
     private var digitBoxWidth: CGFloat {
-        codeCount == 7 || codeCount == 6 ? 28 : 24
+        (codeCount == 7 || codeCount == 6 ? 28 : 24) * fontScale
     }
 
     var body: some View {
@@ -88,7 +91,7 @@ private struct BoxedDigit: View {
                     .monospaced()
                     .foregroundStyle(textColor)
             }
-            .frame(width: digitBoxWidth, height: 36)
+            .frame(width: digitBoxWidth, height: 36 * fontScale)
         }
     }
 }

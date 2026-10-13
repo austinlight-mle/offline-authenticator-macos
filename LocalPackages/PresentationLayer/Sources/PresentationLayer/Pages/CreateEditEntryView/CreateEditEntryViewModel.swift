@@ -1,22 +1,22 @@
 //
 // CreateEditEntryViewModel.swift
-// Proton Authenticator - Created on 10/02/2025.
+// Altosec Authenticator - Created on 10/02/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
-// This file is part of Proton Authenticator.
+// This file is part of Altosec Authenticator.
 //
-// Proton Authenticator is free software: you can redistribute it and/or modify
+// Altosec Authenticator is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Proton Authenticator is distributed in the hope that it will be useful,
+// Altosec Authenticator is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Proton Authenticator. If not, see https://www.gnu.org/licenses/.
+// along with Altosec Authenticator. If not, see https://www.gnu.org/licenses/.
 //
 
 import AuthenticatorRustCore
@@ -39,6 +39,8 @@ final class CreateEditEntryViewModel {
     var shouldDismiss = false
     var errorMessage: String?
     var saving = false
+    var groupId: String?
+    var icon: EntryIcon?
 
     var supportedDigits: [Int] = AppConstants.EntryOptions.supportedDigits
     var supportedPeriod: [Int] = AppConstants.EntryOptions.supportedPeriod
@@ -57,14 +59,41 @@ final class CreateEditEntryViewModel {
     var alertService
 
     @ObservationIgnored
+    @LazyInjected(\ToolsContainer.totpIssuerMapper)
+    private var totpIssuerMapper
+
+    @ObservationIgnored
     private let entry: EntryUiModel?
 
     var isEditing: Bool {
         entry != nil
     }
 
-    init(entry: EntryUiModel?) {
+    var groups: [EntryGroup] {
+        entryDataService.groups
+    }
+
+    var selectedGroup: EntryGroup? {
+        guard let groupId else { return nil }
+        return groups.first { $0.id == groupId }
+    }
+
+    /// Issuer information matching what is currently typed, used to preview the automatic icon.
+    var previewIssuerInfo: AuthIssuerInfo? {
+        let trimmedIssuer = issuer.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmedIssuer.isEmpty else { return nil }
+        return totpIssuerMapper.lookup(issuer: trimmedIssuer)
+    }
+
+    var previewLetter: String {
+        let source = issuer.trimmingCharacters(in: .whitespacesAndNewlines).nilIfEmpty
+            ?? name.trimmingCharacters(in: .whitespacesAndNewlines)
+        return source.first?.uppercased() ?? "-"
+    }
+
+    init(entry: EntryUiModel?, initialGroupId: String? = nil) {
         self.entry = entry
+        groupId = initialGroupId
         setUp(entry: entry)
     }
 
@@ -89,6 +118,7 @@ final class CreateEditEntryViewModel {
         } else {
             .steam(SteamParams(name: name, secret: secret, note: note.nilIfEmpty))
         }
+        let customization = EntryCustomization(groupId: groupId, icon: icon)
         Task { [weak self] in
             guard let self else { return }
 
@@ -96,9 +126,11 @@ final class CreateEditEntryViewModel {
             do {
                 saving = true
                 if let entry {
-                    try await entryDataService.updateAndRefreshEntry(for: entry.id, with: params)
+                    try await entryDataService.updateAndRefreshEntry(for: entry.id,
+                                                                     with: params,
+                                                                     customization: customization)
                 } else {
-                    try await entryDataService.insertAndRefreshEntry(from: params)
+                    try await entryDataService.insertAndRefreshEntry(from: params, customization: customization)
                 }
                 shouldDismiss = true
             } catch {
@@ -121,6 +153,9 @@ final class CreateEditEntryViewModel {
 private extension CreateEditEntryViewModel {
     func setUp(entry: EntryUiModel?) {
         guard let uiEntry = entry else { return }
+
+        groupId = uiEntry.groupId
+        icon = uiEntry.iconOverride
 
         switch uiEntry.orderedEntry.entry.type {
         case .steam:

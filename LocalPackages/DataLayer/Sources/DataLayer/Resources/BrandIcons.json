@@ -1,0 +1,2871 @@
+{
+ "attribution": "Vector icons from Simple Icons (https://simpleicons.org), licensed CC0 1.0. Monogram entries are rendered by the app.",
+ "icons": [
+  {
+   "id": "1password",
+   "title": "1Password",
+   "hex": "145FE4",
+   "aliases": [],
+   "image": "brand_1password",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "adobe",
+   "title": "Adobe",
+   "hex": "FF0000",
+   "aliases": [
+    "adobe id",
+    "creative cloud"
+   ],
+   "image": null,
+   "multicolor": false,
+   "monogram": "A"
+  },
+  {
+   "id": "adp",
+   "title": "ADP",
+   "hex": "D0271D",
+   "aliases": [],
+   "image": "brand_adp",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "airbnb",
+   "title": "Airbnb",
+   "hex": "FF5A5F",
+   "aliases": [],
+   "image": "brand_airbnb",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "airtable",
+   "title": "Airtable",
+   "hex": "18BFFF",
+   "aliases": [],
+   "image": "brand_airtable",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "alibabacloud",
+   "title": "Alibaba Cloud",
+   "hex": "FF6A00",
+   "aliases": [
+    "alibaba",
+    "aliyun"
+   ],
+   "image": "brand_alibabacloud",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "aliexpress",
+   "title": "AliExpress",
+   "hex": "FF4747",
+   "aliases": [],
+   "image": "brand_aliexpress",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "alipay",
+   "title": "Alipay",
+   "hex": "1677FF",
+   "aliases": [],
+   "image": "brand_alipay",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "amazon",
+   "title": "Amazon",
+   "hex": "FF9900",
+   "aliases": [
+    "amazon aws",
+    "amazon web services",
+    "amazon.com",
+    "aws",
+    "aws iam"
+   ],
+   "image": null,
+   "multicolor": false,
+   "monogram": "a"
+  },
+  {
+   "id": "amd",
+   "title": "AMD",
+   "hex": "ED1C24",
+   "aliases": [],
+   "image": "brand_amd",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "americanexpress",
+   "title": "American Express",
+   "hex": "2E77BC",
+   "aliases": [
+    "amex"
+   ],
+   "image": "brand_americanexpress",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "android",
+   "title": "Android",
+   "hex": "3DDC84",
+   "aliases": [],
+   "image": "brand_android",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "ansible",
+   "title": "Ansible",
+   "hex": "EE0000",
+   "aliases": [],
+   "image": "brand_ansible",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "anthropic",
+   "title": "Anthropic",
+   "hex": "191919",
+   "aliases": [
+    "claude"
+   ],
+   "image": "brand_anthropic",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "apple",
+   "title": "Apple",
+   "hex": "000000",
+   "aliases": [
+    "apple id",
+    "appleid",
+    "icloud.com"
+   ],
+   "image": "brand_apple",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "archlinux",
+   "title": "Arch Linux",
+   "hex": "1793D1",
+   "aliases": [
+    "arch linux"
+   ],
+   "image": "brand_archlinux",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "asana",
+   "title": "Asana",
+   "hex": "F06A6A",
+   "aliases": [],
+   "image": "brand_asana",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "asus",
+   "title": "ASUS",
+   "hex": "000000",
+   "aliases": [],
+   "image": "brand_asus",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "atlassian",
+   "title": "Atlassian",
+   "hex": "0052CC",
+   "aliases": [],
+   "image": "brand_atlassian",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "audible",
+   "title": "Audible",
+   "hex": "F8991C",
+   "aliases": [],
+   "image": "brand_audible",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "auth0",
+   "title": "Auth0",
+   "hex": "EB5424",
+   "aliases": [],
+   "image": "brand_auth0",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "autodesk",
+   "title": "Autodesk",
+   "hex": "000000",
+   "aliases": [],
+   "image": "brand_autodesk",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "avast",
+   "title": "Avast",
+   "hex": "FF7800",
+   "aliases": [],
+   "image": "brand_avast",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "backblaze",
+   "title": "Backblaze",
+   "hex": "E21E29",
+   "aliases": [],
+   "image": "brand_backblaze",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "baidu",
+   "title": "Baidu",
+   "hex": "2932E1",
+   "aliases": [],
+   "image": "brand_baidu",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "bankofamerica",
+   "title": "Bank of America",
+   "hex": "012169",
+   "aliases": [
+    "bank of america",
+    "bofa"
+   ],
+   "image": "brand_bankofamerica",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "barclays",
+   "title": "Barclays",
+   "hex": "00AEEF",
+   "aliases": [],
+   "image": "brand_barclays",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "basecamp",
+   "title": "Basecamp",
+   "hex": "1D2D35",
+   "aliases": [],
+   "image": "brand_basecamp",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "battlenet",
+   "title": "Battle.net",
+   "hex": "148EFF",
+   "aliases": [
+    "battle.net",
+    "blizzard",
+    "blizzard entertainment"
+   ],
+   "image": null,
+   "multicolor": false,
+   "monogram": "B"
+  },
+  {
+   "id": "bilibili",
+   "title": "Bilibili",
+   "hex": "00A1D6",
+   "aliases": [],
+   "image": "brand_bilibili",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "binance",
+   "title": "Binance",
+   "hex": "F0B90B",
+   "aliases": [],
+   "image": "brand_binance",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "bing",
+   "title": "Bing",
+   "hex": "008373",
+   "aliases": [],
+   "image": null,
+   "multicolor": false,
+   "monogram": "b"
+  },
+  {
+   "id": "bitbucket",
+   "title": "Bitbucket",
+   "hex": "0052CC",
+   "aliases": [],
+   "image": "brand_bitbucket",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "bitdefender",
+   "title": "Bitdefender",
+   "hex": "ED1C24",
+   "aliases": [],
+   "image": "brand_bitdefender",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "bitwarden",
+   "title": "Bitwarden",
+   "hex": "175DDC",
+   "aliases": [],
+   "image": "brand_bitwarden",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "blender",
+   "title": "Blender",
+   "hex": "E87D0D",
+   "aliases": [],
+   "image": "brand_blender",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "bluesky",
+   "title": "Bluesky",
+   "hex": "1185FE",
+   "aliases": [
+    "bsky"
+   ],
+   "image": "brand_bluesky",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "bookingdotcom",
+   "title": "Booking.com",
+   "hex": "003A9A",
+   "aliases": [
+    "booking",
+    "booking.com"
+   ],
+   "image": "brand_bookingdotcom",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "box",
+   "title": "Box",
+   "hex": "0061D5",
+   "aliases": [],
+   "image": "brand_box",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "brave",
+   "title": "Brave",
+   "hex": "FB542B",
+   "aliases": [],
+   "image": "brand_brave",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "buymeacoffee",
+   "title": "Buy Me A Coffee",
+   "hex": "FFDD00",
+   "aliases": [
+    "buy me a coffee"
+   ],
+   "image": "brand_buymeacoffee",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "canva",
+   "title": "Canva",
+   "hex": "00C4CC",
+   "aliases": [],
+   "image": null,
+   "multicolor": false,
+   "monogram": "C"
+  },
+  {
+   "id": "cashapp",
+   "title": "Cash App",
+   "hex": "00C244",
+   "aliases": [
+    "cash app",
+    "square cash"
+   ],
+   "image": "brand_cashapp",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "chase",
+   "title": "Chase",
+   "hex": "117ACA",
+   "aliases": [],
+   "image": "brand_chase",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "circleci",
+   "title": "CircleCI",
+   "hex": "343434",
+   "aliases": [],
+   "image": "brand_circleci",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "cisco",
+   "title": "Cisco",
+   "hex": "1BA0D7",
+   "aliases": [],
+   "image": "brand_cisco",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "clickup",
+   "title": "ClickUp",
+   "hex": "7B68EE",
+   "aliases": [],
+   "image": "brand_clickup",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "cloudflare",
+   "title": "Cloudflare",
+   "hex": "F38020",
+   "aliases": [],
+   "image": "brand_cloudflare",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "coda",
+   "title": "Coda",
+   "hex": "F46A54",
+   "aliases": [],
+   "image": "brand_coda",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "codepen",
+   "title": "CodePen",
+   "hex": "000000",
+   "aliases": [],
+   "image": null,
+   "multicolor": false,
+   "monogram": "CP"
+  },
+  {
+   "id": "codesandbox",
+   "title": "CodeSandbox",
+   "hex": "151515",
+   "aliases": [],
+   "image": "brand_codesandbox",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "codewars",
+   "title": "Codewars",
+   "hex": "B1361E",
+   "aliases": [],
+   "image": "brand_codewars",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "coinbase",
+   "title": "Coinbase",
+   "hex": "0052FF",
+   "aliases": [],
+   "image": "brand_coinbase",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "coursera",
+   "title": "Coursera",
+   "hex": "0056D2",
+   "aliases": [],
+   "image": "brand_coursera",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "dashlane",
+   "title": "Dashlane",
+   "hex": "0E353D",
+   "aliases": [],
+   "image": "brand_dashlane",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "datadog",
+   "title": "Datadog",
+   "hex": "632CA6",
+   "aliases": [],
+   "image": "brand_datadog",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "debian",
+   "title": "Debian",
+   "hex": "A81D33",
+   "aliases": [],
+   "image": "brand_debian",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "deezer",
+   "title": "Deezer",
+   "hex": "A238FF",
+   "aliases": [],
+   "image": "brand_deezer",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "deliveroo",
+   "title": "Deliveroo",
+   "hex": "00CCBC",
+   "aliases": [],
+   "image": "brand_deliveroo",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "dell",
+   "title": "Dell",
+   "hex": "007DB8",
+   "aliases": [],
+   "image": "brand_dell",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "devdotto",
+   "title": "dev.to",
+   "hex": "0A0A0A",
+   "aliases": [
+    "dev.to"
+   ],
+   "image": "brand_devdotto",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "diagramsdotnet",
+   "title": "diagrams.net",
+   "hex": "F08705",
+   "aliases": [
+    "diagrams.net",
+    "draw.io",
+    "drawio"
+   ],
+   "image": "brand_diagramsdotnet",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "digitalocean",
+   "title": "DigitalOcean",
+   "hex": "0080FF",
+   "aliases": [],
+   "image": "brand_digitalocean",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "discord",
+   "title": "Discord",
+   "hex": "5865F2",
+   "aliases": [],
+   "image": "brand_discord",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "docker",
+   "title": "Docker",
+   "hex": "2496ED",
+   "aliases": [
+    "docker hub"
+   ],
+   "image": "brand_docker",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "doordash",
+   "title": "DoorDash",
+   "hex": "FF3008",
+   "aliases": [],
+   "image": "brand_doordash",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "dropbox",
+   "title": "Dropbox",
+   "hex": "0061FF",
+   "aliases": [],
+   "image": "brand_dropbox",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "duckduckgo",
+   "title": "DuckDuckGo",
+   "hex": "DE5833",
+   "aliases": [],
+   "image": "brand_duckduckgo",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "duolingo",
+   "title": "Duolingo",
+   "hex": "58CC02",
+   "aliases": [],
+   "image": "brand_duolingo",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "ea",
+   "title": "EA",
+   "hex": "000000",
+   "aliases": [
+    "ea account",
+    "electronic arts"
+   ],
+   "image": "brand_ea",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "ebay",
+   "title": "eBay",
+   "hex": "E53238",
+   "aliases": [],
+   "image": "brand_ebay",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "epicgames",
+   "title": "Epic Games",
+   "hex": "313131",
+   "aliases": [
+    "epic"
+   ],
+   "image": "brand_epicgames",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "etoro",
+   "title": "eToro",
+   "hex": "6AAE32",
+   "aliases": [],
+   "image": null,
+   "multicolor": false,
+   "monogram": "e"
+  },
+  {
+   "id": "etsy",
+   "title": "Etsy",
+   "hex": "F16521",
+   "aliases": [],
+   "image": "brand_etsy",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "evernote",
+   "title": "Evernote",
+   "hex": "00A82D",
+   "aliases": [],
+   "image": "brand_evernote",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "expedia",
+   "title": "Expedia",
+   "hex": "191E3B",
+   "aliases": [],
+   "image": "brand_expedia",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "expressvpn",
+   "title": "ExpressVPN",
+   "hex": "DA3940",
+   "aliases": [],
+   "image": "brand_expressvpn",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "facebook",
+   "title": "Facebook",
+   "hex": "0866FF",
+   "aliases": [
+    "fb"
+   ],
+   "image": "brand_facebook",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "fedora",
+   "title": "Fedora",
+   "hex": "51A2DA",
+   "aliases": [],
+   "image": "brand_fedora",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "fidelity",
+   "title": "Fidelity",
+   "hex": "4A8B2C",
+   "aliases": [
+    "fidelity investments"
+   ],
+   "image": null,
+   "multicolor": false,
+   "monogram": "F"
+  },
+  {
+   "id": "fidoalliance",
+   "title": "Fido Alliance",
+   "hex": "FFBF3B",
+   "aliases": [
+    "fido"
+   ],
+   "image": "brand_fidoalliance",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "figma",
+   "title": "Figma",
+   "hex": "F24E1E",
+   "aliases": [],
+   "image": "brand_figma",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "firebase",
+   "title": "Firebase",
+   "hex": "DD2C00",
+   "aliases": [],
+   "image": "brand_firebase",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "firefox",
+   "title": "Firefox",
+   "hex": "FF7139",
+   "aliases": [],
+   "image": "brand_firefox",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "fiverr",
+   "title": "Fiverr",
+   "hex": "1DBF73",
+   "aliases": [],
+   "image": "brand_fiverr",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "fortinet",
+   "title": "Fortinet",
+   "hex": "EE3124",
+   "aliases": [],
+   "image": "brand_fortinet",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "freecodecamp",
+   "title": "freeCodeCamp",
+   "hex": "0A0A23",
+   "aliases": [],
+   "image": "brand_freecodecamp",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "github",
+   "title": "GitHub",
+   "hex": "181717",
+   "aliases": [],
+   "image": "brand_github",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "gitlab",
+   "title": "GitLab",
+   "hex": "FC6D26",
+   "aliases": [],
+   "image": "brand_gitlab",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "glassdoor",
+   "title": "Glassdoor",
+   "hex": "00A162",
+   "aliases": [],
+   "image": "brand_glassdoor",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "glitch",
+   "title": "Glitch",
+   "hex": "3333FF",
+   "aliases": [],
+   "image": "brand_glitch",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "gnuprivacyguard",
+   "title": "GNU Privacy Guard",
+   "hex": "0093DD",
+   "aliases": [
+    "gnupg",
+    "gpg"
+   ],
+   "image": "brand_gnuprivacyguard",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "godaddy",
+   "title": "GoDaddy",
+   "hex": "1BDBDB",
+   "aliases": [],
+   "image": "brand_godaddy",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "godotengine",
+   "title": "Godot Engine",
+   "hex": "478CBF",
+   "aliases": [
+    "godot"
+   ],
+   "image": "brand_godotengine",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "goodreads",
+   "title": "Goodreads",
+   "hex": "1E1914",
+   "aliases": [],
+   "image": "brand_goodreads",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "google",
+   "title": "Google",
+   "hex": "4285F4",
+   "aliases": [
+    "gmail",
+    "google account",
+    "google workspace",
+    "googlemail",
+    "구글"
+   ],
+   "image": "brand_google",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "googlechrome",
+   "title": "Google Chrome",
+   "hex": "4285F4",
+   "aliases": [
+    "chrome"
+   ],
+   "image": "brand_googlechrome",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "googlecloud",
+   "title": "Google Cloud",
+   "hex": "4285F4",
+   "aliases": [
+    "gcp",
+    "google cloud platform"
+   ],
+   "image": "brand_googlecloud",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "googleplay",
+   "title": "Google Play",
+   "hex": "414141",
+   "aliases": [
+    "play store"
+   ],
+   "image": "brand_googleplay",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "grafana",
+   "title": "Grafana",
+   "hex": "F46800",
+   "aliases": [],
+   "image": "brand_grafana",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "gusto",
+   "title": "Gusto",
+   "hex": "F45D48",
+   "aliases": [],
+   "image": "brand_gusto",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "hackerrank",
+   "title": "HackerRank",
+   "hex": "00EA64",
+   "aliases": [],
+   "image": "brand_hackerrank",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "hashicorp",
+   "title": "HashiCorp",
+   "hex": "000000",
+   "aliases": [],
+   "image": "brand_hashicorp",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "heroku",
+   "title": "Heroku",
+   "hex": "430098",
+   "aliases": [],
+   "image": null,
+   "multicolor": false,
+   "monogram": "H"
+  },
+  {
+   "id": "hetzner",
+   "title": "Hetzner",
+   "hex": "D50C2D",
+   "aliases": [],
+   "image": "brand_hetzner",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "homeassistant",
+   "title": "Home Assistant",
+   "hex": "18BCF2",
+   "aliases": [
+    "home assistant"
+   ],
+   "image": "brand_homeassistant",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "hostinger",
+   "title": "Hostinger",
+   "hex": "673DE6",
+   "aliases": [],
+   "image": "brand_hostinger",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "hp",
+   "title": "HP",
+   "hex": "0096D6",
+   "aliases": [],
+   "image": "brand_hp",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "hsbc",
+   "title": "HSBC",
+   "hex": "DB0011",
+   "aliases": [],
+   "image": "brand_hsbc",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "huawei",
+   "title": "Huawei",
+   "hex": "FF0000",
+   "aliases": [],
+   "image": "brand_huawei",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "hubspot",
+   "title": "HubSpot",
+   "hex": "FF7A59",
+   "aliases": [],
+   "image": "brand_hubspot",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "huggingface",
+   "title": "Hugging Face",
+   "hex": "FFD21E",
+   "aliases": [
+    "hugging face"
+   ],
+   "image": "brand_huggingface",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "humblebundle",
+   "title": "Humble Bundle",
+   "hex": "CC2929",
+   "aliases": [
+    "humble"
+   ],
+   "image": "brand_humblebundle",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "ibm",
+   "title": "IBM",
+   "hex": "052FAD",
+   "aliases": [
+    "ibm cloud",
+    "ibmid"
+   ],
+   "image": null,
+   "multicolor": false,
+   "monogram": "IBM"
+  },
+  {
+   "id": "icloud",
+   "title": "iCloud",
+   "hex": "3693F3",
+   "aliases": [],
+   "image": "brand_icloud",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "ifttt",
+   "title": "IFTTT",
+   "hex": "000000",
+   "aliases": [],
+   "image": "brand_ifttt",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "ikea",
+   "title": "IKEA",
+   "hex": "0058A3",
+   "aliases": [],
+   "image": "brand_ikea",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "indeed",
+   "title": "Indeed",
+   "hex": "003A9B",
+   "aliases": [],
+   "image": "brand_indeed",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "insomnia",
+   "title": "Insomnia",
+   "hex": "4000BF",
+   "aliases": [],
+   "image": "brand_insomnia",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "instacart",
+   "title": "Instacart",
+   "hex": "43B02A",
+   "aliases": [],
+   "image": "brand_instacart",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "instagram",
+   "title": "Instagram",
+   "hex": "FF0069",
+   "aliases": [],
+   "image": "brand_instagram",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "intel",
+   "title": "Intel",
+   "hex": "0071C5",
+   "aliases": [],
+   "image": "brand_intel",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "intercom",
+   "title": "Intercom",
+   "hex": "6AFDEF",
+   "aliases": [],
+   "image": "brand_intercom",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "ionos",
+   "title": "Ionos",
+   "hex": "003D8F",
+   "aliases": [],
+   "image": "brand_ionos",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "jenkins",
+   "title": "Jenkins",
+   "hex": "D24939",
+   "aliases": [],
+   "image": "brand_jenkins",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "jetbrains",
+   "title": "JetBrains",
+   "hex": "000000",
+   "aliases": [],
+   "image": "brand_jetbrains",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "jira",
+   "title": "Jira",
+   "hex": "0052CC",
+   "aliases": [],
+   "image": "brand_jira",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "kaggle",
+   "title": "Kaggle",
+   "hex": "20BEFF",
+   "aliases": [],
+   "image": "brand_kaggle",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "kakaotalk",
+   "title": "KakaoTalk",
+   "hex": "FFCD00",
+   "aliases": [
+    "kakao",
+    "카카오톡"
+   ],
+   "image": "brand_kakaotalk",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "kaspersky",
+   "title": "Kaspersky",
+   "hex": "006D5C",
+   "aliases": [],
+   "image": "brand_kaspersky",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "keeper",
+   "title": "Keeper",
+   "hex": "FFC700",
+   "aliases": [
+    "keeper security"
+   ],
+   "image": "brand_keeper",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "keybase",
+   "title": "Keybase",
+   "hex": "33A0FF",
+   "aliases": [],
+   "image": "brand_keybase",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "khanacademy",
+   "title": "Khan Academy",
+   "hex": "14BF96",
+   "aliases": [
+    "khan academy"
+   ],
+   "image": "brand_khanacademy",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "kofi",
+   "title": "Ko-fi",
+   "hex": "FF6433",
+   "aliases": [
+    "ko-fi"
+   ],
+   "image": "brand_kofi",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "kraken",
+   "title": "Kraken",
+   "hex": "5741D9",
+   "aliases": [],
+   "image": null,
+   "multicolor": false,
+   "monogram": "K"
+  },
+  {
+   "id": "kubernetes",
+   "title": "Kubernetes",
+   "hex": "326CE5",
+   "aliases": [],
+   "image": "brand_kubernetes",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "lastpass",
+   "title": "LastPass",
+   "hex": "D32D27",
+   "aliases": [],
+   "image": "brand_lastpass",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "leetcode",
+   "title": "LeetCode",
+   "hex": "FFA116",
+   "aliases": [],
+   "image": "brand_leetcode",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "lenovo",
+   "title": "Lenovo",
+   "hex": "E2231A",
+   "aliases": [],
+   "image": "brand_lenovo",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "lg",
+   "title": "LG",
+   "hex": "A50034",
+   "aliases": [],
+   "image": "brand_lg",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "line",
+   "title": "LINE",
+   "hex": "00C300",
+   "aliases": [
+    "ライン",
+    "라인"
+   ],
+   "image": "brand_line",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "linkedin",
+   "title": "LinkedIn",
+   "hex": "0A66C2",
+   "aliases": [],
+   "image": null,
+   "multicolor": false,
+   "monogram": "in"
+  },
+  {
+   "id": "linode",
+   "title": "Linode",
+   "hex": "00A95C",
+   "aliases": [
+    "akamai"
+   ],
+   "image": null,
+   "multicolor": false,
+   "monogram": "L"
+  },
+  {
+   "id": "linux",
+   "title": "Linux",
+   "hex": "FCC624",
+   "aliases": [],
+   "image": "brand_linux",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "lucid",
+   "title": "Lucid",
+   "hex": "282C33",
+   "aliases": [
+    "lucidchart"
+   ],
+   "image": "brand_lucid",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "lyft",
+   "title": "Lyft",
+   "hex": "FF00BF",
+   "aliases": [],
+   "image": "brand_lyft",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "mailchimp",
+   "title": "MailChimp",
+   "hex": "FFE01B",
+   "aliases": [],
+   "image": "brand_mailchimp",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "make",
+   "title": "Make",
+   "hex": "6D00CC",
+   "aliases": [],
+   "image": "brand_make",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "malwarebytes",
+   "title": "Malwarebytes",
+   "hex": "0D3ECC",
+   "aliases": [],
+   "image": "brand_malwarebytes",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "mastercard",
+   "title": "MasterCard",
+   "hex": "EB001B",
+   "aliases": [],
+   "image": "brand_mastercard",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "mastodon",
+   "title": "Mastodon",
+   "hex": "6364FF",
+   "aliases": [],
+   "image": "brand_mastodon",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "mcafee",
+   "title": "McAfee",
+   "hex": "C01818",
+   "aliases": [],
+   "image": "brand_mcafee",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "medium",
+   "title": "Medium",
+   "hex": "000000",
+   "aliases": [],
+   "image": "brand_medium",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "mega",
+   "title": "MEGA",
+   "hex": "D9272E",
+   "aliases": [
+    "mega.nz"
+   ],
+   "image": "brand_mega",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "mercadopago",
+   "title": "Mercado Pago",
+   "hex": "00B1EA",
+   "aliases": [],
+   "image": "brand_mercadopago",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "meta",
+   "title": "Meta",
+   "hex": "0467DF",
+   "aliases": [],
+   "image": "brand_meta",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "microsoft",
+   "title": "Microsoft",
+   "hex": "0078D4",
+   "aliases": [
+    "hotmail",
+    "live",
+    "live.com",
+    "microsoft account",
+    "msn",
+    "office 365",
+    "office365",
+    "onedrive",
+    "outlook",
+    "windows",
+    "xbox live"
+   ],
+   "image": "brand_microsoft",
+   "multicolor": true,
+   "monogram": "M"
+  },
+  {
+   "id": "microsoftazure",
+   "title": "Microsoft Azure",
+   "hex": "0078D4",
+   "aliases": [
+    "azure",
+    "azure ad",
+    "entra",
+    "entra id"
+   ],
+   "image": null,
+   "multicolor": false,
+   "monogram": "Az"
+  },
+  {
+   "id": "miro",
+   "title": "Miro",
+   "hex": "050038",
+   "aliases": [],
+   "image": "brand_miro",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "monday",
+   "title": "monday.com",
+   "hex": "FF3D57",
+   "aliases": [
+    "monday.com"
+   ],
+   "image": null,
+   "multicolor": false,
+   "monogram": "m"
+  },
+  {
+   "id": "mongodb",
+   "title": "MongoDB",
+   "hex": "47A248",
+   "aliases": [
+    "atlas",
+    "mongodb atlas"
+   ],
+   "image": "brand_mongodb",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "mozilla",
+   "title": "Mozilla",
+   "hex": "161616",
+   "aliases": [
+    "firefox accounts",
+    "mozilla accounts"
+   ],
+   "image": "brand_mozilla",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "mullvad",
+   "title": "Mullvad",
+   "hex": "294D73",
+   "aliases": [
+    "Mullvad VPN"
+   ],
+   "image": "brand_mullvad",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "n26",
+   "title": "N26",
+   "hex": "48AC98",
+   "aliases": [],
+   "image": "brand_n26",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "namecheap",
+   "title": "Namecheap",
+   "hex": "DE3723",
+   "aliases": [],
+   "image": "brand_namecheap",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "naver",
+   "title": "Naver",
+   "hex": "03C75A",
+   "aliases": [
+    "ネイバー",
+    "네이버"
+   ],
+   "image": "brand_naver",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "netflix",
+   "title": "Netflix",
+   "hex": "E50914",
+   "aliases": [],
+   "image": "brand_netflix",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "netlify",
+   "title": "Netlify",
+   "hex": "00C7B7",
+   "aliases": [
+    "Netlify CMS"
+   ],
+   "image": "brand_netlify",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "newrelic",
+   "title": "New Relic",
+   "hex": "1CE783",
+   "aliases": [
+    "new relic"
+   ],
+   "image": "brand_newrelic",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "nextcloud",
+   "title": "Nextcloud",
+   "hex": "0082C9",
+   "aliases": [],
+   "image": "brand_nextcloud",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "nintendo",
+   "title": "Nintendo",
+   "hex": "E60012",
+   "aliases": [
+    "nintendo account",
+    "nintendo switch"
+   ],
+   "image": null,
+   "multicolor": false,
+   "monogram": "N"
+  },
+  {
+   "id": "nordvpn",
+   "title": "NordVPN",
+   "hex": "4687FF",
+   "aliases": [],
+   "image": "brand_nordvpn",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "norton",
+   "title": "Norton",
+   "hex": "FFE01A",
+   "aliases": [],
+   "image": "brand_norton",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "notion",
+   "title": "Notion",
+   "hex": "000000",
+   "aliases": [],
+   "image": "brand_notion",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "npm",
+   "title": "npm",
+   "hex": "CB3837",
+   "aliases": [
+    "npmjs"
+   ],
+   "image": "brand_npm",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "nubank",
+   "title": "Nubank",
+   "hex": "820AD1",
+   "aliases": [],
+   "image": "brand_nubank",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "nuget",
+   "title": "NuGet",
+   "hex": "004880",
+   "aliases": [],
+   "image": "brand_nuget",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "nvidia",
+   "title": "NVIDIA",
+   "hex": "76B900",
+   "aliases": [
+    "geforce"
+   ],
+   "image": "brand_nvidia",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "obsstudio",
+   "title": "OBS Studio",
+   "hex": "302E31",
+   "aliases": [
+    "obs"
+   ],
+   "image": "brand_obsstudio",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "okta",
+   "title": "Okta",
+   "hex": "007DC1",
+   "aliases": [],
+   "image": "brand_okta",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "oneplus",
+   "title": "OnePlus",
+   "hex": "F5010C",
+   "aliases": [],
+   "image": "brand_oneplus",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "openai",
+   "title": "OpenAI",
+   "hex": "000000",
+   "aliases": [
+    "chatgpt"
+   ],
+   "image": null,
+   "multicolor": false,
+   "monogram": "AI"
+  },
+  {
+   "id": "openvpn",
+   "title": "OpenVPN",
+   "hex": "EA7E20",
+   "aliases": [],
+   "image": "brand_openvpn",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "opera",
+   "title": "Opera",
+   "hex": "FF1B2D",
+   "aliases": [],
+   "image": "brand_opera",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "oracle",
+   "title": "Oracle",
+   "hex": "F80000",
+   "aliases": [
+    "oci",
+    "oracle cloud"
+   ],
+   "image": null,
+   "multicolor": false,
+   "monogram": "O"
+  },
+  {
+   "id": "ovh",
+   "title": "OVH",
+   "hex": "123F6D",
+   "aliases": [
+    "ovhcloud"
+   ],
+   "image": "brand_ovh",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "packagist",
+   "title": "Packagist",
+   "hex": "F28D1A",
+   "aliases": [],
+   "image": "brand_packagist",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "pagerduty",
+   "title": "PagerDuty",
+   "hex": "06AC38",
+   "aliases": [],
+   "image": "brand_pagerduty",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "paloaltonetworks",
+   "title": "Palo Alto Networks",
+   "hex": "F04E23",
+   "aliases": [
+    "palo alto"
+   ],
+   "image": "brand_paloaltonetworks",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "patreon",
+   "title": "Patreon",
+   "hex": "000000",
+   "aliases": [],
+   "image": "brand_patreon",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "paypal",
+   "title": "PayPal",
+   "hex": "002991",
+   "aliases": [],
+   "image": "brand_paypal",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "pinterest",
+   "title": "Pinterest",
+   "hex": "BD081C",
+   "aliases": [],
+   "image": "brand_pinterest",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "playstation",
+   "title": "PlayStation",
+   "hex": "0070D1",
+   "aliases": [
+    "psn",
+    "sony playstation"
+   ],
+   "image": "brand_playstation",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "plex",
+   "title": "Plex",
+   "hex": "EBAF00",
+   "aliases": [],
+   "image": "brand_plex",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "postman",
+   "title": "Postman",
+   "hex": "FF6C37",
+   "aliases": [],
+   "image": "brand_postman",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "proton",
+   "title": "Proton",
+   "hex": "6D4AFF",
+   "aliases": [
+    "proton account",
+    "proton.me",
+    "protonme"
+   ],
+   "image": "brand_proton",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "protoncalendar",
+   "title": "Proton Calendar",
+   "hex": "50B0E9",
+   "aliases": [
+    "proton calendar"
+   ],
+   "image": "brand_protoncalendar",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "protondrive",
+   "title": "Proton Drive",
+   "hex": "EB508D",
+   "aliases": [
+    "proton drive"
+   ],
+   "image": "brand_protondrive",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "protonmail",
+   "title": "Proton Mail",
+   "hex": "6D4AFF",
+   "aliases": [
+    "proton mail"
+   ],
+   "image": "brand_protonmail",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "protonvpn",
+   "title": "Proton VPN",
+   "hex": "66DEB1",
+   "aliases": [
+    "proton vpn"
+   ],
+   "image": "brand_protonvpn",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "pypi",
+   "title": "PyPI",
+   "hex": "3775A9",
+   "aliases": [],
+   "image": "brand_pypi",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "qnap",
+   "title": "QNAP",
+   "hex": "0C2E82",
+   "aliases": [
+    "Quality Network Appliance Provider"
+   ],
+   "image": "brand_qnap",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "qq",
+   "title": "QQ",
+   "hex": "1EBAFC",
+   "aliases": [
+    "tencent"
+   ],
+   "image": "brand_qq",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "qualys",
+   "title": "Qualys",
+   "hex": "ED2E26",
+   "aliases": [],
+   "image": "brand_qualys",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "redhat",
+   "title": "Red Hat",
+   "hex": "EE0000",
+   "aliases": [
+    "red hat"
+   ],
+   "image": "brand_redhat",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "reddit",
+   "title": "Reddit",
+   "hex": "FF4500",
+   "aliases": [],
+   "image": "brand_reddit",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "render",
+   "title": "Render",
+   "hex": "000000",
+   "aliases": [],
+   "image": "brand_render",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "replit",
+   "title": "Replit",
+   "hex": "F26207",
+   "aliases": [],
+   "image": "brand_replit",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "revolut",
+   "title": "Revolut",
+   "hex": "191C1F",
+   "aliases": [],
+   "image": "brand_revolut",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "riotgames",
+   "title": "Riot Games",
+   "hex": "EB0029",
+   "aliases": [
+    "league of legends",
+    "riot",
+    "valorant"
+   ],
+   "image": "brand_riotgames",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "robinhood",
+   "title": "Robinhood",
+   "hex": "CCFF00",
+   "aliases": [],
+   "image": "brand_robinhood",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "rockstargames",
+   "title": "Rockstar Games",
+   "hex": "FCAF17",
+   "aliases": [
+    "rockstar",
+    "social club"
+   ],
+   "image": "brand_rockstargames",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "rubygems",
+   "title": "RubyGems",
+   "hex": "E9573F",
+   "aliases": [],
+   "image": "brand_rubygems",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "salesforce",
+   "title": "Salesforce",
+   "hex": "00A1E0",
+   "aliases": [],
+   "image": null,
+   "multicolor": false,
+   "monogram": "sf"
+  },
+  {
+   "id": "samsung",
+   "title": "Samsung",
+   "hex": "1428A0",
+   "aliases": [
+    "samsung account"
+   ],
+   "image": "brand_samsung",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "sap",
+   "title": "SAP",
+   "hex": "0FAAFF",
+   "aliases": [],
+   "image": "brand_sap",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "scaleway",
+   "title": "Scaleway",
+   "hex": "4F0599",
+   "aliases": [],
+   "image": "brand_scaleway",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "sendgrid",
+   "title": "SendGrid",
+   "hex": "1A82E2",
+   "aliases": [],
+   "image": null,
+   "multicolor": false,
+   "monogram": "SG"
+  },
+  {
+   "id": "sentry",
+   "title": "Sentry",
+   "hex": "362D59",
+   "aliases": [],
+   "image": "brand_sentry",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "shopify",
+   "title": "Shopify",
+   "hex": "7AB55C",
+   "aliases": [],
+   "image": "brand_shopify",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "signal",
+   "title": "Signal",
+   "hex": "3B45FD",
+   "aliases": [],
+   "image": "brand_signal",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "sinaweibo",
+   "title": "Sina Weibo",
+   "hex": "E6162D",
+   "aliases": [
+    "weibo"
+   ],
+   "image": "brand_sinaweibo",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "slack",
+   "title": "Slack",
+   "hex": "4A154B",
+   "aliases": [],
+   "image": null,
+   "multicolor": false,
+   "monogram": "S"
+  },
+  {
+   "id": "snapchat",
+   "title": "Snapchat",
+   "hex": "FFFC00",
+   "aliases": [],
+   "image": "brand_snapchat",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "sony",
+   "title": "Sony",
+   "hex": "FFFFFF",
+   "aliases": [],
+   "image": "brand_sony",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "soundcloud",
+   "title": "SoundCloud",
+   "hex": "FF5500",
+   "aliases": [],
+   "image": "brand_soundcloud",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "spotify",
+   "title": "Spotify",
+   "hex": "1ED760",
+   "aliases": [],
+   "image": "brand_spotify",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "squarespace",
+   "title": "Squarespace",
+   "hex": "000000",
+   "aliases": [],
+   "image": "brand_squarespace",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "stackoverflow",
+   "title": "Stack Overflow",
+   "hex": "F58025",
+   "aliases": [
+    "stack exchange",
+    "stack overflow",
+    "stackexchange"
+   ],
+   "image": "brand_stackoverflow",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "steam",
+   "title": "Steam",
+   "hex": "000000",
+   "aliases": [
+    "steam community",
+    "steampowered"
+   ],
+   "image": "brand_steam",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "steamdeck",
+   "title": "Steam Deck",
+   "hex": "1A9FFF",
+   "aliases": [],
+   "image": "brand_steamdeck",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "stripe",
+   "title": "Stripe",
+   "hex": "635BFF",
+   "aliases": [],
+   "image": "brand_stripe",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "substack",
+   "title": "Substack",
+   "hex": "FF6719",
+   "aliases": [],
+   "image": "brand_substack",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "supabase",
+   "title": "Supabase",
+   "hex": "3FCF8E",
+   "aliases": [],
+   "image": "brand_supabase",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "surfshark",
+   "title": "Surfshark",
+   "hex": "1EBFBF",
+   "aliases": [],
+   "image": "brand_surfshark",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "swagger",
+   "title": "Swagger",
+   "hex": "85EA2D",
+   "aliases": [],
+   "image": "brand_swagger",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "synology",
+   "title": "Synology",
+   "hex": "B5B5B6",
+   "aliases": [],
+   "image": "brand_synology",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "tailscale",
+   "title": "Tailscale",
+   "hex": "242424",
+   "aliases": [],
+   "image": "brand_tailscale",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "target",
+   "title": "Target",
+   "hex": "CC0000",
+   "aliases": [],
+   "image": "brand_target",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "telegram",
+   "title": "Telegram",
+   "hex": "26A5E4",
+   "aliases": [],
+   "image": "brand_telegram",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "tencentqq",
+   "title": "Tencent",
+   "hex": "1479D7",
+   "aliases": [],
+   "image": null,
+   "multicolor": false,
+   "monogram": "T"
+  },
+  {
+   "id": "terraform",
+   "title": "Terraform",
+   "hex": "844FBA",
+   "aliases": [],
+   "image": "brand_terraform",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "threads",
+   "title": "Threads",
+   "hex": "000000",
+   "aliases": [],
+   "image": "brand_threads",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "tidal",
+   "title": "TIDAL",
+   "hex": "000000",
+   "aliases": [],
+   "image": "brand_tidal",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "tiktok",
+   "title": "TikTok",
+   "hex": "000000",
+   "aliases": [],
+   "image": "brand_tiktok",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "todoist",
+   "title": "Todoist",
+   "hex": "E44332",
+   "aliases": [],
+   "image": "brand_todoist",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "toptal",
+   "title": "Toptal",
+   "hex": "3863A0",
+   "aliases": [],
+   "image": "brand_toptal",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "torbrowser",
+   "title": "Tor Browser",
+   "hex": "7D4698",
+   "aliases": [
+    "tor"
+   ],
+   "image": "brand_torbrowser",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "travisci",
+   "title": "Travis CI",
+   "hex": "3EAAAF",
+   "aliases": [
+    "travis"
+   ],
+   "image": "brand_travisci",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "trello",
+   "title": "Trello",
+   "hex": "0052CC",
+   "aliases": [],
+   "image": "brand_trello",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "tripadvisor",
+   "title": "Tripadvisor",
+   "hex": "34E0A1",
+   "aliases": [],
+   "image": "brand_tripadvisor",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "tumblr",
+   "title": "Tumblr",
+   "hex": "36465D",
+   "aliases": [],
+   "image": "brand_tumblr",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "tutanota",
+   "title": "Tuta",
+   "hex": "840010",
+   "aliases": [
+    "tuta",
+    "tuta mail"
+   ],
+   "image": null,
+   "multicolor": false,
+   "monogram": "T"
+  },
+  {
+   "id": "twilio",
+   "title": "Twilio",
+   "hex": "F22F46",
+   "aliases": [],
+   "image": null,
+   "multicolor": false,
+   "monogram": "T"
+  },
+  {
+   "id": "twitch",
+   "title": "Twitch",
+   "hex": "9146FF",
+   "aliases": [],
+   "image": "brand_twitch",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "uber",
+   "title": "Uber",
+   "hex": "000000",
+   "aliases": [],
+   "image": "brand_uber",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "ubereats",
+   "title": "Uber Eats",
+   "hex": "06C167",
+   "aliases": [
+    "uber eats"
+   ],
+   "image": "brand_ubereats",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "ubisoft",
+   "title": "Ubisoft",
+   "hex": "000000",
+   "aliases": [
+    "ubisoft connect"
+   ],
+   "image": "brand_ubisoft",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "ubuntu",
+   "title": "Ubuntu",
+   "hex": "E95420",
+   "aliases": [
+    "canonical",
+    "ubuntu one"
+   ],
+   "image": "brand_ubuntu",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "udemy",
+   "title": "Udemy",
+   "hex": "A435F0",
+   "aliases": [],
+   "image": "brand_udemy",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "unity",
+   "title": "Unity",
+   "hex": "FFFFFF",
+   "aliases": [],
+   "image": "brand_unity",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "unrealengine",
+   "title": "Unreal Engine",
+   "hex": "0E1128",
+   "aliases": [
+    "unreal"
+   ],
+   "image": "brand_unrealengine",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "upwork",
+   "title": "Upwork",
+   "hex": "6FDA44",
+   "aliases": [],
+   "image": "brand_upwork",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "venmo",
+   "title": "Venmo",
+   "hex": "008CFF",
+   "aliases": [],
+   "image": "brand_venmo",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "vercel",
+   "title": "Vercel",
+   "hex": "000000",
+   "aliases": [],
+   "image": "brand_vercel",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "vimeo",
+   "title": "Vimeo",
+   "hex": "1AB7EA",
+   "aliases": [],
+   "image": "brand_vimeo",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "visa",
+   "title": "Visa",
+   "hex": "1A1F71",
+   "aliases": [],
+   "image": "brand_visa",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "visualstudio",
+   "title": "Visual Studio",
+   "hex": "5C2D91",
+   "aliases": [
+    "visual studio code",
+    "vscode"
+   ],
+   "image": null,
+   "multicolor": false,
+   "monogram": "VS"
+  },
+  {
+   "id": "vivaldi",
+   "title": "Vivaldi",
+   "hex": "EF3939",
+   "aliases": [],
+   "image": "brand_vivaldi",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "vmware",
+   "title": "VMware",
+   "hex": "607078",
+   "aliases": [],
+   "image": "brand_vmware",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "walmart",
+   "title": "Walmart",
+   "hex": "0071CE",
+   "aliases": [],
+   "image": null,
+   "multicolor": false,
+   "monogram": "W"
+  },
+  {
+   "id": "webex",
+   "title": "Webex",
+   "hex": "000000",
+   "aliases": [],
+   "image": "brand_webex",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "wechat",
+   "title": "WeChat",
+   "hex": "07C160",
+   "aliases": [
+    "weixin"
+   ],
+   "image": "brand_wechat",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "wellsfargo",
+   "title": "Wells Fargo",
+   "hex": "D71E28",
+   "aliases": [
+    "wells fargo"
+   ],
+   "image": "brand_wellsfargo",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "whatsapp",
+   "title": "WhatsApp",
+   "hex": "25D366",
+   "aliases": [],
+   "image": "brand_whatsapp",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "wikipedia",
+   "title": "Wikipedia",
+   "hex": "000000",
+   "aliases": [
+    "wikimedia"
+   ],
+   "image": "brand_wikipedia",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "wireguard",
+   "title": "WireGuard",
+   "hex": "88171A",
+   "aliases": [],
+   "image": "brand_wireguard",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "wise",
+   "title": "Wise",
+   "hex": "9FE870",
+   "aliases": [
+    "transferwise"
+   ],
+   "image": "brand_wise",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "wix",
+   "title": "Wix",
+   "hex": "0C6EFC",
+   "aliases": [],
+   "image": "brand_wix",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "wordpress",
+   "title": "WordPress",
+   "hex": "21759B",
+   "aliases": [
+    "wordpress.com",
+    "wp"
+   ],
+   "image": "brand_wordpress",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "workday",
+   "title": "Workday",
+   "hex": "F38B00",
+   "aliases": [],
+   "image": null,
+   "multicolor": false,
+   "monogram": "w"
+  },
+  {
+   "id": "x",
+   "title": "X",
+   "hex": "000000",
+   "aliases": [
+    "Twitter",
+    "twitter",
+    "twitter.com",
+    "x.com"
+   ],
+   "image": "brand_x",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "xbox",
+   "title": "Xbox",
+   "hex": "107C10",
+   "aliases": [],
+   "image": null,
+   "multicolor": false,
+   "monogram": "X"
+  },
+  {
+   "id": "xiaomi",
+   "title": "Xiaomi",
+   "hex": "FF6900",
+   "aliases": [
+    "mi account"
+   ],
+   "image": "brand_xiaomi",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "yahoo",
+   "title": "Yahoo",
+   "hex": "6001D2",
+   "aliases": [
+    "yahoo japan",
+    "yahoo mail"
+   ],
+   "image": null,
+   "multicolor": false,
+   "monogram": "Y!"
+  },
+  {
+   "id": "yandexcloud",
+   "title": "Yandex Cloud",
+   "hex": "5282FF",
+   "aliases": [
+    "yandex"
+   ],
+   "image": "brand_yandexcloud",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "youtube",
+   "title": "YouTube",
+   "hex": "FF0000",
+   "aliases": [],
+   "image": "brand_youtube",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "yubico",
+   "title": "Yubico",
+   "hex": "84BD00",
+   "aliases": [
+    "yubikey"
+   ],
+   "image": "brand_yubico",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "zapier",
+   "title": "Zapier",
+   "hex": "FF4F00",
+   "aliases": [],
+   "image": "brand_zapier",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "zelle",
+   "title": "Zelle",
+   "hex": "6D1ED4",
+   "aliases": [],
+   "image": "brand_zelle",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "zendesk",
+   "title": "Zendesk",
+   "hex": "03363D",
+   "aliases": [],
+   "image": "brand_zendesk",
+   "multicolor": false,
+   "monogram": null
+  },
+  {
+   "id": "zoom",
+   "title": "Zoom",
+   "hex": "0B5CFF",
+   "aliases": [],
+   "image": "brand_zoom",
+   "multicolor": false,
+   "monogram": null
+  }
+ ]
+}

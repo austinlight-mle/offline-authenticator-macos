@@ -1,22 +1,22 @@
 //
 // Router.swift
-// Proton Authenticator - Created on 10/02/2025.
+// Altosec Authenticator - Created on 10/02/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
-// This file is part of Proton Authenticator.
+// This file is part of Altosec Authenticator.
 //
-// Proton Authenticator is free software: you can redistribute it and/or modify
+// Altosec Authenticator is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Proton Authenticator is distributed in the hope that it will be useful,
+// Altosec Authenticator is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Proton Authenticator. If not, see https://www.gnu.org/licenses/.
+// along with Altosec Authenticator. If not, see https://www.gnu.org/licenses/.
 
 // periphery:ignore:all
 
@@ -33,8 +33,10 @@ public enum SheetDestination: Hashable, Identifiable {
         self
     }
 
-    case createEditEntry(EntryUiModel?)
+    case createEditEntry(EntryUiModel?, groupId: String? = nil)
     case settings
+    case groups
+    case entryIcon(EntryUiModel)
 }
 
 public enum FullScreenDestination: Hashable, Identifiable {
@@ -44,6 +46,9 @@ public enum FullScreenDestination: Hashable, Identifiable {
 
     #if os(iOS)
     case qrCodeScanner
+    #else
+    /// Placeholder so the enum is inhabited on platforms without a camera scanner.
+    case none
     #endif
 }
 
@@ -94,12 +99,20 @@ public extension View {
     func sheetDestinations(_ item: Binding<SheetDestination?>) -> some View {
         sheet(item: item) { destination in
             switch destination {
-            case let .createEditEntry(entry):
-                CreateEditEntryView(entry: entry)
+            case let .createEditEntry(entry, groupId):
+                CreateEditEntryView(entry: entry, initialGroupId: groupId)
                     .resizableSheet()
 
             case .settings:
                 SettingsView()
+                    .resizableSheet()
+
+            case .groups:
+                GroupsView()
+                    .resizableSheet()
+
+            case let .entryIcon(entry):
+                EntryIconPickerSheet(entry: entry)
                     .resizableSheet()
             }
         }

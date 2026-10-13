@@ -17,7 +17,7 @@
 	<string>NSFileProtectionComplete</string>
 	<key>com.apple.developer.icloud-container-identifiers</key>
 	<array>
-		<string>iCloud.me.proton.authenticator</string>
+		<string>iCloud.me.altosec.authenticator</string>
 	</array>
 	<key>com.apple.developer.icloud-services</key>
 	<array>
@@ -26,13 +26,13 @@
 	</array>
 	<key>com.apple.developer.ubiquity-container-identifiers</key>
 	<array>
-		<string>iCloud.me.proton.authenticator</string>
+		<string>iCloud.me.altosec.authenticator</string>
 	</array>
 	<key>com.apple.security.app-sandbox</key>
 	<true/>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.me.proton.authenticator</string>
+		<string>group.me.altosec.authenticator</string>
 	</array>
 	<key>com.apple.security.files.bookmarks.app-scope</key>
 	<true/>
@@ -40,7 +40,7 @@
 	<true/>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)group.me.proton.authenticator</string>
+		<string>$(AppIdentifierPrefix)group.me.altosec.authenticator</string>
 		<string>$(AppIdentifierPrefix)group.me.proton.protoncore.account</string>
 	</array>
 </dict>

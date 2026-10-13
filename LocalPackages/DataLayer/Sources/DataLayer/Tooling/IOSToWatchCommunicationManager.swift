@@ -1,25 +1,27 @@
 //
 // IOSToWatchCommunicationManager.swift
-// Proton Authenticator - Created on 25/07/2025.
+// Altosec Authenticator - Created on 25/07/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
-// This file is part of Proton Authenticator.
+// This file is part of Altosec Authenticator.
 //
-// Proton Authenticator is free software: you can redistribute it and/or modify
+// Altosec Authenticator is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Proton Authenticator is distributed in the hope that it will be useful,
+// Altosec Authenticator is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Proton Authenticator. If not, see https://www.gnu.org/licenses/.
+// along with Altosec Authenticator. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
 import Models
+
+#if os(iOS)
 import UIKit
 import WatchConnectivity
 
@@ -140,3 +142,17 @@ private extension IOSToWatchCommunicationManager {
         UIPasteboard.general.string = text
     }
 }
+
+#else
+
+/// There is no paired watch on this platform; keep the same API so callers do not need guards.
+public final class IOSToWatchCommunicationManager: NSObject, @unchecked Sendable {
+    public init(entryDataService: any EntryDataServiceProtocol, logger: any LoggerProtocol) {
+        _ = entryDataService
+        _ = logger
+        super.init()
+    }
+
+    public func checkIfActive() {}
+}
+#endif

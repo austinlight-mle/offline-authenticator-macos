@@ -14,11 +14,6 @@ LOCAL_PACKAGE_PATH="$SCRIPT_DIR/../../LocalPackages/AuthenticatorRustCore"
 
 URL="https://github.com/protonpass/proton-pass-common/releases/download/${VERSION}/AuthenticatorRustCode.swift.zip"
 
-if ! command -v wget &> /dev/null; then
-    echo "wget is not installed, installing via Homebrew"
-    brew install wget
-fi
-
 # Check if the current local package is using the right version
 LOCAL_VERSION_PATH="${LOCAL_PACKAGE_PATH}/VERSION"
 if [ -e "$LOCAL_VERSION_PATH" ]; then
@@ -37,10 +32,15 @@ fi
 echo "Creating tmp directory if not exist"
 mkdir -p $TMP_DIR_PATH
 
-echo -e "Downloading artifact\n"
-wget -q --progress=bar:force -N -P $TMP_DIR_PATH $URL
-
 ARTIFACT_PATH="${TMP_DIR_PATH}/AuthenticatorRustCode.swift.zip"
+
+echo -e "Downloading artifact\n"
+if command -v wget &> /dev/null; then
+    wget -q --progress=bar:force -N -P $TMP_DIR_PATH $URL
+else
+    # wget is not part of macOS; curl is, so use it instead of installing wget via Homebrew
+    curl -sSL -o "$ARTIFACT_PATH" "$URL"
+fi
 
 echo "Checksum verification for artifact"
 echo -n "${HASH}  ${ARTIFACT_PATH}" | shasum -a 256 -c
@@ -51,7 +51,7 @@ unzip -o $ARTIFACT_PATH -d $TMP_DIR_PATH
 rm -rf $LOCAL_PACKAGE_PATH
 mkdir $LOCAL_PACKAGE_PATH
 
-UNZIPPED_PACKAGE_PATH="${TMP_DIR_PATH}/builds/proton/clients/pass/proton-pass-common/proton-authenticator-mobile/iOS/AuthenticatorRustCore/*"
+UNZIPPED_PACKAGE_PATH="${TMP_DIR_PATH}/builds/proton/clients/pass/proton-pass-common/altosec-authenticator-mobile/iOS/AuthenticatorRustCore/*"
 
 echo -e "\nCopying unzipped package to local package directory"
 mv -f $UNZIPPED_PACKAGE_PATH $LOCAL_PACKAGE_PATH

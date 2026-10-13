@@ -1,22 +1,22 @@
 //
 // EntriesEmptyStateView.swift
-// Proton Authenticator - Created on 17/02/2026.
+// Altosec Authenticator - Created on 17/02/2026.
 // Copyright (c) 2026 Proton Technologies AG
 //
-// This file is part of Proton Authenticator.
+// This file is part of Altosec Authenticator.
 //
-// Proton Authenticator is free software: you can redistribute it and/or modify
+// Altosec Authenticator is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Proton Authenticator is distributed in the hope that it will be useful,
+// Altosec Authenticator is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Proton Authenticator. If not, see https://www.gnu.org/licenses/.
+// along with Altosec Authenticator. If not, see https://www.gnu.org/licenses/.
 
 import CommonUtilities
 import Models
@@ -26,9 +26,11 @@ struct EntriesEmptyStateView: View {
     let dataState: DataState<[EntryUiModel]>
     let query: String
     let entriesEmpty: Bool
+    var selectedGroupName: String?
     let handleAddNewCode: () -> Void
     @Binding var showImportOptions: Bool
     let reloadData: () -> Void
+    var clearGroupFilter: () -> Void = {}
 
     var body: some View {
         switch dataState {
@@ -40,6 +42,8 @@ struct EntriesEmptyStateView: View {
                 noCodesView
             } else if entriesEmpty, !query.isEmpty {
                 noSearchResultsView
+            } else if entriesEmpty, let selectedGroupName {
+                noGroupEntriesView(groupName: selectedGroupName)
             }
 
         case let .failed(error):
@@ -92,6 +96,36 @@ struct EntriesEmptyStateView: View {
         } actions: {}
             .refreshable { reloadData() }
             .importingService($showImportOptions, context: .homepage)
+    }
+
+    private func noGroupEntriesView(groupName: String) -> some View {
+        VStack(spacing: 16) {
+            Spacer()
+            Image(systemName: "folder")
+                .font(.system(size: 40))
+                .foregroundStyle(.textWeak)
+            Text("No codes in \"\(groupName)\" yet", bundle: .module)
+                .dynamicFont(size: 22, textStyle: .title2, weight: .semibold)
+                .multilineTextAlignment(.center)
+                .foregroundStyle(.textNorm)
+            Text("Add a code from this group or move existing codes here from their menu.", bundle: .module)
+                .dynamicFont(size: 16, textStyle: .body)
+                .multilineTextAlignment(.center)
+                .foregroundStyle(.textWeak)
+            CapsuleButton(title: "Create new code",
+                          textColor: .white,
+                          style: .borderedFilled,
+                          maxWidth: 260,
+                          action: handleAddNewCode)
+            CapsuleButton(title: "Show all codes",
+                          textColor: .textNorm,
+                          style: .bordered,
+                          maxWidth: 260,
+                          action: clearGroupFilter)
+            Spacer()
+        }
+        .frame(maxHeight: .infinity)
+        .padding(.horizontal, DesignConstant.padding * 2)
     }
 
     private var noSearchResultsView: some View {

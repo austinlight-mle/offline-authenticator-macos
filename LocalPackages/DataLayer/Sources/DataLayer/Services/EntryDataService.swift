@@ -1,22 +1,22 @@
 //
 // EntryDataService.swift
-// Proton Authenticator - Created on 28/02/2025.
+// Altosec Authenticator - Created on 28/02/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
-// This file is part of Proton Authenticator.
+// This file is part of Altosec Authenticator.
 //
-// Proton Authenticator is free software: you can redistribute it and/or modify
+// Altosec Authenticator is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Proton Authenticator is distributed in the hope that it will be useful,
+// Altosec Authenticator is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Proton Authenticator. If not, see https://www.gnu.org/licenses/.
+// along with Altosec Authenticator. If not, see https://www.gnu.org/licenses/.
 
 import AuthenticatorRustCore
 import Combine
@@ -34,12 +34,24 @@ import ProtonCoreServices
 public protocol EntryDataServiceProtocol: Sendable, Observable {
     var dataState: DataState<[EntryUiModel]> { get }
     var hasNonDecryptableEntries: Bool { get }
+    /// User defined groups, sorted by their manual order.
+    var groups: [EntryGroup] { get }
 
     func getEntry(from uri: String) async throws -> Entry
     func insertAndRefreshEntry(from uri: String) async throws
-    func insertAndRefreshEntry(from params: EntryParameters) async throws
-    func updateAndRefreshEntry(for entryId: String, with params: EntryParameters) async throws
+    func insertAndRefreshEntry(from params: EntryParameters, customization: EntryCustomization?) async throws
+    func updateAndRefreshEntry(for entryId: String,
+                               with params: EntryParameters,
+                               customization: EntryCustomization?) async throws
     func insertAndRefresh(entry: Entry) async throws
+
+    // MARK: - Groups & customization (local only)
+
+    func setCustomization(_ customization: EntryCustomization, for entryId: String) async throws
+    func setGroup(_ groupId: String?, for entryIds: [String]) async throws
+    func saveGroup(_ group: EntryGroup) async throws
+    func deleteGroup(_ groupId: String) async throws
+    func reorderGroups(_ groups: [EntryGroup]) async throws
     func loadEntries() async throws
     func delete(_ entry: EntryUiModel) async throws
     func reorderItem(from currentPosition: Int, to newPosition: Int) async throws
@@ -63,6 +75,20 @@ public protocol EntryDataServiceProtocol: Sendable, Observable {
 public extension EntryDataServiceProtocol {
     func exportEntries(password: String? = nil) throws -> String {
         try exportEntries(password: password)
+    }
+}
+
+public extension EntryDataServiceProtocol {
+    func insertAndRefreshEntry(from params: EntryParameters) async throws {
+        try await insertAndRefreshEntry(from: params, customization: nil)
+    }
+
+    func updateAndRefreshEntry(for entryId: String, with params: EntryParameters) async throws {
+        try await updateAndRefreshEntry(for: entryId, with: params, customization: nil)
+    }
+
+    func setGroup(_ groupId: String?, for entryId: String) async throws {
+        try await setGroup(groupId, for: [entryId])
     }
 }
 
@@ -94,6 +120,7 @@ public final class EntryDataService: EntryDataServiceProtocol {
 
     public private(set) var dataState: DataState<[EntryUiModel]> = .loading
     public private(set) var hasNonDecryptableEntries = false
+    public private(set) var groups: [EntryGroup] = []
 
     @ObservationIgnored
     private let repository: any EntryRepositoryProtocol
@@ -125,6 +152,10 @@ public final class EntryDataService: EntryDataServiceProtocol {
     private let keychainService: KeychainServicing
     @ObservationIgnored
     private var savingEntryIds: Set<String> = []
+    @ObservationIgnored
+    private let customizationRepository: any EntryCustomizationRepositoryProtocol
+    @ObservationIgnored
+    private var customizations: [String: EntryCustomization] = [:]
 
     // MARK: - Init
 
@@ -137,8 +168,11 @@ public final class EntryDataService: EntryDataServiceProtocol {
                 backUpManager: any BackUpServicing,
                 settings: any SettingsServicing,
                 keychainService: any KeychainServicing,
-                syncOperation: any SyncOperationCheckerProtocol = SyncOperationChecker()) {
+                syncOperation: any SyncOperationCheckerProtocol = SyncOperationChecker(),
+                customizationRepository: any EntryCustomizationRepositoryProtocol =
+                    InMemoryEntryCustomizationRepository()) {
         self.repository = repository
+        self.customizationRepository = customizationRepository
         self.importService = importService
         self.totpGenerator = totpGenerator
         self.totpIssuerMapper = totpIssuerMapper
@@ -183,13 +217,15 @@ public extension EntryDataService {
         log(.debug, "Inserted entry from URI")
     }
 
-    func insertAndRefreshEntry(from params: EntryParameters) async throws {
+    func insertAndRefreshEntry(from params: EntryParameters, customization: EntryCustomization?) async throws {
         log(.debug, "Inserting and refreshing entry")
         let entry = try createEntry(with: params)
-        try await save(entry)
+        try await save(entry, customization: customization)
     }
 
-    func updateAndRefreshEntry(for entryId: String, with params: EntryParameters) async throws {
+    func updateAndRefreshEntry(for entryId: String,
+                               with params: EntryParameters,
+                               customization: EntryCustomization?) async throws {
         guard !savingEntryIds.contains(entryId) else {
             log(.warning, "Entry \(entryId) update already in progress, skipping")
             return
@@ -206,9 +242,14 @@ public extension EntryDataService {
             return
         }
         let oldEntry = data[index]
-        let newEntry = oldEntry.copy(newEntry: entry)
+        var newEntry = oldEntry.copy(newEntry: entry)
 
         try await repository.completeUpdate(entry: newEntry.orderedEntry, oldEntry: oldEntry.orderedEntry)
+
+        if let customization {
+            let stored = try await persistCustomization(customization, for: entryId)
+            newEntry = newEntry.updateCustomization(stored)
+        }
 
         data[index] = newEntry
         updateData(data)
@@ -221,6 +262,7 @@ public extension EntryDataService {
         log(.debug, "Deleting entry with ID: \(entry.id)")
 
         try await repository.completeRemoves(entries: [entry.orderedEntry])
+        await forgetCustomizations(for: [entry.id])
 
         let filteredData = currentData.filter { $0.orderedEntry.id != entry.id }
 
@@ -313,6 +355,9 @@ public extension EntryDataService {
         log(.debug, "Deleting all entries")
         do {
             try await repository.localRemoveAll()
+            try? await customizationRepository.removeAllCustomizations()
+            customizations = [:]
+            groups = []
 
             var remoteError: (any Error)?
             if let remoteEntries = try? await repository.fetchAllRemoteEntries() {
@@ -361,6 +406,72 @@ public extension EntryDataService {
             log(.error, "Failed to backup entries: \(error)")
             return .error(error)
         }
+    }
+}
+
+// MARK: - Groups & customization
+
+public extension EntryDataService {
+    func setCustomization(_ customization: EntryCustomization, for entryId: String) async throws {
+        log(.debug, "Updating customization of entry \(entryId)")
+        let stored = try await persistCustomization(customization, for: entryId)
+        applyCustomizations([entryId: stored])
+    }
+
+    func setGroup(_ groupId: String?, for entryIds: [String]) async throws {
+        guard !entryIds.isEmpty else { return }
+        if let groupId, !groups.contains(where: { $0.id == groupId }) {
+            log(.warning, "Ignoring unknown group \(groupId)")
+            return
+        }
+        log(.debug, "Moving \(entryIds.count) entries to group \(groupId ?? "none")")
+        var changes = [String: EntryCustomization?]()
+        for entryId in entryIds {
+            var customization = customizations[entryId] ?? .none
+            guard customization.groupId != groupId else { continue }
+            customization.groupId = groupId
+            let stored = try await persistCustomization(customization, for: entryId)
+            changes[entryId] = .some(stored)
+        }
+        applyCustomizations(changes)
+    }
+
+    func saveGroup(_ group: EntryGroup) async throws {
+        var group = group
+        group.name = group.name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !group.name.isEmpty else {
+            throw AuthError.generic(.emptyGroupName)
+        }
+        log(.debug, "Saving group \(group.id)")
+        try await customizationRepository.saveGroup(group)
+        var updated = groups.filter { $0.id != group.id }
+        updated.append(group)
+        groups = updated.sortedByOrder
+    }
+
+    func deleteGroup(_ groupId: String) async throws {
+        log(.debug, "Deleting group \(groupId)")
+        try await customizationRepository.deleteGroup(id: groupId)
+        groups.removeAll { $0.id == groupId }
+
+        var changes = [String: EntryCustomization?]()
+        for (entryId, customization) in customizations where customization.groupId == groupId {
+            var updated = customization
+            updated.groupId = nil
+            let newValue: EntryCustomization? = updated.isEmpty ? nil : updated
+            changes[entryId] = .some(newValue)
+        }
+        applyCustomizations(changes)
+    }
+
+    func reorderGroups(_ groups: [EntryGroup]) async throws {
+        let reordered = groups.enumerated().map { index, group in
+            var group = group
+            group.order = index
+            return group
+        }
+        try await customizationRepository.saveGroups(reordered)
+        self.groups = reordered
     }
 }
 
@@ -454,6 +565,7 @@ private extension EntryDataService {
     func performFullRefresh() async {
         log(.debug, "Full BE refresh")
         do {
+            await loadCustomizations()
             let entriesStates = try await repository.getAllLocalEntries()
             if Task.isCancelled {
                 return
@@ -500,6 +612,7 @@ private extension EntryDataService {
             if Task.isCancelled {
                 return
             }
+            await loadCustomizations()
             let entryStates = try await repository.getAllLocalEntries()
             if Task.isCancelled {
                 return
@@ -521,7 +634,8 @@ private extension EntryDataService {
     }
 
     func save(_ entry: Entry,
-              remoteId: String? = nil) async throws {
+              remoteId: String? = nil,
+              customization: EntryCustomization? = nil) async throws {
         guard !savingEntryIds.contains(entry.id) else {
             log(.warning, "Entry \(entry.id) save already in progress, skipping duplicate call")
             return
@@ -551,6 +665,10 @@ private extension EntryDataService {
         var entryUI = EntryUiModel(orderedEntry: orderEntry,
                                    code: code,
                                    issuerInfo: issuerInfo)
+        if let customization, !customization.isEmpty {
+            let stored = try await persistCustomization(customization, for: entry.id)
+            entryUI = entryUI.updateCustomization(stored)
+        }
         if let remoteResult = remoteResults?.first {
             entryUI = entryUI.updateRemoteInfos(remoteResult.entryID)
         }
@@ -594,7 +712,8 @@ private extension EntryDataService {
             let issuerInfo = totpIssuerMapper.lookup(issuer: code.entry.issuer)
             results.append(.init(orderedEntry: entry,
                                  code: code,
-                                 issuerInfo: issuerInfo))
+                                 issuerInfo: issuerInfo,
+                                 customization: customizations[entry.id]))
         }
 
         return results
@@ -620,6 +739,57 @@ private extension EntryDataService {
 
     func log(_ level: LogLevel, _ message: String, function: String = #function, line: Int = #line) {
         logger.log(level, category: .data, message, function: function, line: line)
+    }
+
+    func loadCustomizations() async {
+        do {
+            let snapshot = try await customizationRepository.fetchAll()
+            groups = snapshot.groups
+            customizations = snapshot.customizations
+        } catch {
+            log(.error, "Failed to load groups and customizations: \(error.localizedDescription)")
+        }
+    }
+
+    /// Persists a customization and returns the value to attach to the entry (`nil` when empty).
+    func persistCustomization(_ customization: EntryCustomization,
+                              for entryId: String) async throws -> EntryCustomization? {
+        var customization = customization
+        if let groupId = customization.groupId, !groups.contains(where: { $0.id == groupId }) {
+            customization.groupId = nil
+        }
+        try await customizationRepository.setCustomization(customization, for: entryId)
+        if customization.isEmpty {
+            customizations[entryId] = nil
+            return nil
+        }
+        customizations[entryId] = customization
+        return customization
+    }
+
+    /// Applies customization changes to the in-memory entries without restarting the TOTP generator.
+    func applyCustomizations(_ changes: [String: EntryCustomization?]) {
+        guard !changes.isEmpty else { return }
+        for (entryId, customization) in changes {
+            customizations[entryId] = customization
+        }
+        guard let entries = dataState.data else { return }
+        let updated = entries.map { entry -> EntryUiModel in
+            guard let change = changes[entry.id] else { return entry }
+            return entry.updateCustomization(change)
+        }
+        dataState = .loaded(updated)
+    }
+
+    func forgetCustomizations(for entryIds: [String]) async {
+        for entryId in entryIds {
+            customizations[entryId] = nil
+        }
+        do {
+            try await customizationRepository.removeCustomizations(for: entryIds)
+        } catch {
+            log(.warning, "Failed to remove customizations for \(entryIds): \(error.localizedDescription)")
+        }
     }
 
     func updateCodes(newCodes: [Code]) {

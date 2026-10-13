@@ -1,22 +1,22 @@
 //
 // EntriesView.swift
-// Proton Authenticator - Created on 10/02/2025.
+// Altosec Authenticator - Created on 10/02/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
-// This file is part of Proton Authenticator.
+// This file is part of Altosec Authenticator.
 //
-// Proton Authenticator is free software: you can redistribute it and/or modify
+// Altosec Authenticator is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Proton Authenticator is distributed in the hope that it will be useful,
+// Altosec Authenticator is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Proton Authenticator. If not, see https://www.gnu.org/licenses/.
+// along with Altosec Authenticator. If not, see https://www.gnu.org/licenses/.
 //
 
 import AVFoundation
@@ -32,13 +32,19 @@ enum EntryAction: Equatable, Hashable {
     case copyNextCode(EntryUiModel)
     case edit(EntryUiModel)
     case delete(EntryUiModel)
+    case changeIcon(EntryUiModel)
+    case moveToGroup(EntryUiModel, String?)
 
     var entryUiModel: EntryUiModel {
         switch self {
         case let .copyCurrentCode(entry),
              let .copyNextCode(entry),
              let .delete(entry),
-             let .edit(entry):
+             let .edit(entry),
+             let .changeIcon(entry):
+            entry
+
+        case let .moveToGroup(entry, _):
             entry
         }
     }
@@ -99,6 +105,15 @@ public struct EntriesView: View {
                         if searchBarAlignment == .bottom, !viewModel.noEntries {
                             Color.clear.frame(height: 10)
                         }
+                    }
+                }
+                .safeAreaInset(edge: .top, spacing: 0) {
+                    if viewModel.showGroupBar {
+                        GroupFilterBar(groups: viewModel.groups,
+                                       selectedGroupId: viewModel.selectedGroupId,
+                                       counts: viewModel.groupCounts,
+                                       onSelect: viewModel.selectGroup,
+                                       onManage: { router.presentedSheet = .groups })
                     }
                 }
                 .safeAreaInset(edge: .bottom) {
@@ -183,6 +198,9 @@ public struct EntriesView: View {
                 .onChange(of: viewModel.sortOption) {
                     viewModel.refreshEntries()
                 }
+                .onChange(of: viewModel.groups) {
+                    viewModel.refreshEntries()
+                }
                 .sheetDestinations($router.presentedSheet)
             #if os(iOS)
                 .fullScreenDestination($router.presentedFullscreenSheet)
@@ -200,9 +218,11 @@ public struct EntriesView: View {
                     EntriesEmptyStateView(dataState: viewModel.dataState,
                                           query: viewModel.query,
                                           entriesEmpty: viewModel.entries.isEmpty,
+                                          selectedGroupName: viewModel.selectedGroup?.name,
                                           handleAddNewCode: handleAddNewCode,
                                           showImportOptions: $showImportOptions,
-                                          reloadData: viewModel.reloadData)
+                                          reloadData: viewModel.reloadData,
+                                          clearGroupFilter: { viewModel.selectGroup(nil) })
                 }
                 .showSpinner(viewModel.deleteTask != nil)
                 .onChange(of: router.noSheetDisplayed) { _, isNoSheet in
@@ -216,7 +236,11 @@ public struct EntriesView: View {
                 }
                 .blur(radius: router.noSheetDisplayed ? 0 : 8)
                 .fullScreenMainBackground()
+            #if os(iOS)
                 .navigationBarTitleDisplayMode(.inline)
+            #else
+                .navigationTitle(Text(verbatim: "Altosec Authenticator"))
+            #endif
                 .sheet(item: $viewModel.inAppService.currentMessage,
                        content: { message in
                            InAppMessageView(message: message)
@@ -247,6 +271,15 @@ private extension EntriesView {
         }
     }
 
+    /// On macOS the window is kept narrow and entries are always listed one per line.
+    var singleColumn: Bool {
+        #if os(macOS)
+        true
+        #else
+        false
+        #endif
+    }
+
     var nativeSearchable: Bool {
         switch searchBarAlignment {
         case .top:
@@ -265,11 +298,15 @@ private extension EntriesView {
     }
 
     var searchFieldPlacement: SearchFieldPlacement {
+        #if os(iOS)
         if AppConstants.adjustableSearchBarPosition {
             searchBarAlignment == .top ? .navigationBarDrawer(displayMode: .always) : .toolbar
         } else {
             .toolbar
         }
+        #else
+        .toolbar
+        #endif
     }
 }
 
@@ -281,7 +318,9 @@ private extension EntriesView {
             ForEach(viewModel.entries) { entry in
                 cell(for: entry, reducedShadow: false)
                     .contentShape(.dragPreview, RoundedRectangle(cornerRadius: 18))
+                #if os(iOS)
                     .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 18))
+                #endif
                     .swipeActions(edge: .leading) {
                         Button {
                             router.presentedSheet = .createEditEntry(entry)
@@ -315,7 +354,7 @@ private extension EntriesView {
     @ViewBuilder
     func grid(width: CGFloat) -> some View {
         let entryMinWidth: CGFloat = 650
-        let columnCount = min(Int(ceil(width / entryMinWidth)), viewModel.entries.count)
+        let columnCount = singleColumn ? 1 : max(1, min(Int(ceil(width / entryMinWidth)), viewModel.entries.count))
 
         ScrollView {
             LazyVGrid(columns: [GridItem](repeating: GridItem(.flexible()), count: columnCount)) {
@@ -386,6 +425,7 @@ private extension EntriesView {
                   searchTerm: viewModel.query,
                   isHovered: hoveringEntry == entry,
                   reducedShadow: reducedShadow,
+                  groups: viewModel.groups,
                   onAction: handle(_:),
                   animatingEntryAction: $viewModel.animatingEntry)
             .equatable()
@@ -397,10 +437,10 @@ private extension EntriesView {
             .accessibilityHint(Text("Tap to copy token to clipboard. Swipe left to delete and right to edit.",
                                     bundle: .module))
             .contextMenu {
-                EntryOptions(entry: entry, onAction: handle(_:))
+                EntryOptions(entry: entry, groups: viewModel.groups, onAction: handle(_:))
             }
             .onHover { over in
-                if ProcessInfo.processInfo.isiOSAppOnMac {
+                if ProcessInfo.processInfo.isiOSAppOnMac || AppConstants.isMacOS {
                     if over {
                         hoveringEntry = entry
                     } else if hoveringEntry == entry {
@@ -432,17 +472,23 @@ private extension EntriesView {
 
         case let .delete(entry):
             viewModel.delete(entry)
+
+        case let .changeIcon(entry):
+            router.presentedSheet = .entryIcon(entry)
+
+        case let .moveToGroup(entry, groupId):
+            viewModel.moveToGroup(entry, groupId: groupId)
         }
     }
 
     func handleAddNewCode() {
         #if os(macOS)
-        router.presentedSheet = .createEditEntry(nil)
+        router.presentedSheet = .createEditEntry(nil, groupId: viewModel.selectedGroupId)
         #else
         if AppConstants.isMobile {
             showScannerIfCameraAvailable()
         } else {
-            router.presentedSheet = .createEditEntry(nil)
+            router.presentedSheet = .createEditEntry(nil, groupId: viewModel.selectedGroupId)
         }
         #endif
     }

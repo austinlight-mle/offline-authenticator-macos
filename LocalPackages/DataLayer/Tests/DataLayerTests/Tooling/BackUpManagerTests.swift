@@ -1,22 +1,22 @@
 //
 // BackUpManagerTests.swift
-// Proton Authenticator - Created on 29/05/2026.
+// Altosec Authenticator - Created on 29/05/2026.
 // Copyright (c) 2026 Proton Technologies AG
 //
-// This file is part of Proton Authenticator.
+// This file is part of Altosec Authenticator.
 //
-// Proton Authenticator is free software: you can redistribute it and/or modify
+// Altosec Authenticator is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Proton Authenticator is distributed in the hope that it will be useful,
+// Altosec Authenticator is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Proton Authenticator. If not, see https://www.gnu.org/licenses/.
+// along with Altosec Authenticator. If not, see https://www.gnu.org/licenses/.
 
 import CommonUtilities
 import DataLayer
@@ -193,7 +193,7 @@ struct BackUpManagerTests {
     //
     // The backup folder can be any user-chosen directory (e.g. an iCloud folder shared with other
     // apps). The manager must only ever list, rotate, or delete files it created itself, which
-    // always follow the "Proton_Authenticator_backup_<yyyy-MM-dd>.json" convention.
+    // always follow the "Altosec_Authenticator_backup_<yyyy-MM-dd>.json" convention.
 
     @Test
     func `Automatic backup rotation never deletes files the app did not create`() throws {
@@ -364,14 +364,14 @@ struct BackUpManagerTests {
         let listed = try sut.getAllDocumentsData()
         #expect(listed.count == 1)
         let name = try #require(listed.first?.name)
-        #expect(name.hasPrefix("Proton_Authenticator_backup_"))
+        #expect(name.hasPrefix("Altosec_Authenticator_backup_"))
         #expect(name.hasSuffix(".json"))
     }
 }
 
 // MARK: - Dedicated subfolder + migration (defense-in-depth)
 //
-// Backups live inside a "Proton Authenticator" subfolder of the user-picked folder, so every
+// Backups live inside a "Altosec Authenticator" subfolder of the user-picked folder, so every
 // destructive operation runs in a directory that contains only our files. Existing flat
 // backups are migrated into it on first access; foreign files are never moved.
 
@@ -385,7 +385,7 @@ private extension BackUpManagerTests {
     }
 
     @Test
-    func `A new backup is written inside the Proton Authenticator subfolder, not the folder root`() throws {
+    func `A new backup is written inside the Altosec Authenticator subfolder, not the folder root`() throws {
         let tmp = try makeTempDirectory()
         defer { try? FileManager.default.removeItem(at: tmp) }
         let sut = makeSUT()

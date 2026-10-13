@@ -9836,60 +9836,60 @@
         }
       }
     },
-    "Rate Proton Authenticator" : {
+    "Rate Altosec Authenticator" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Proton Authenticator bewerten"
+            "value" : "Altosec Authenticator bewerten"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rate Proton Authenticator"
+            "value" : "Rate Altosec Authenticator"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Valora Proton Authenticator"
+            "value" : "Valora Altosec Authenticator"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Calificar Proton Authenticator"
+            "value" : "Calificar Altosec Authenticator"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Évaluer Proton Authenticator"
+            "value" : "Évaluer Altosec Authenticator"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Valuta Proton Authenticator"
+            "value" : "Valuta Altosec Authenticator"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Beoordeel Proton Authenticator"
+            "value" : "Beoordeel Altosec Authenticator"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Avaliar o Proton Authenticator"
+            "value" : "Avaliar o Altosec Authenticator"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Proton Authenticator uygulamasını değerlendirin"
+            "value" : "Altosec Authenticator uygulamasını değerlendirin"
           }
         }
       }

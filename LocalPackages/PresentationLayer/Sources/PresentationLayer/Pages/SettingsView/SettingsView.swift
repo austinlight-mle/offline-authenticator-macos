@@ -1,22 +1,22 @@
 //
 // SettingsView.swift
-// Proton Authenticator - Created on 10/02/2025.
+// Altosec Authenticator - Created on 10/02/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
-// This file is part of Proton Authenticator.
+// This file is part of Altosec Authenticator.
 //
-// Proton Authenticator is free software: you can redistribute it and/or modify
+// Altosec Authenticator is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Proton Authenticator is distributed in the hope that it will be useful,
+// Altosec Authenticator is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Proton Authenticator. If not, see https://www.gnu.org/licenses/.
+// along with Altosec Authenticator. If not, see https://www.gnu.org/licenses/.
 //
 
 import CommonUtilities
@@ -53,7 +53,6 @@ enum SettingsSheet {
 
 public struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.openURL) private var openURL
 
     @State private var viewModel = SettingsViewModel()
     @State private var router = Router()
@@ -61,31 +60,17 @@ public struct SettingsView: View {
     @State private var showExportAlert = false
     @State private var showPasswordExportAlert = false
     @State private var showDeleteAllDataSheet = false
+    @State private var showGroups = false
 
     public init() {}
 
     public var body: some View {
         NavigationStack(path: $router.path) {
             List {
-                if viewModel.showPassBanner {
-                    PassBanner(onClose: viewModel.togglePassBanner, onGetPass: {
-                        open(urlString: ProtonProduct.pass.finalUrl)
-                    })
-                    .ifNoLiquidGlass { view in
-                        view.padding(.horizontal, 16)
-                    }
-                    .buttonStyle(.plain)
-                    .plainListRow()
-                }
                 securitySection
                 appearanceSection
                 dataSection
                 supportSection
-                if !viewModel.products.isEmpty {
-                    discoverySection
-                }
-
-                ratingSection
 
                 deleteAllDataButton
                     .ifNoLiquidGlass { view in
@@ -94,8 +79,19 @@ public struct SettingsView: View {
                 versionLabel
                     .padding(.bottom)
             }
-            .animation(.default, value: viewModel.showPassBanner)
             .settingsListStyle()
+            .toolbar {
+                #if os(macOS)
+                ToolbarItem(placement: .cancellationAction) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Text("Close", bundle: .module)
+                    }
+                    .keyboardShortcut(.escape, modifiers: [])
+                }
+                #endif
+            }
             #if os(iOS)
                 .toolbar {
                     ToolbarItem(placement: toolbarItemPlacement) {
@@ -147,11 +143,11 @@ public struct SettingsView: View {
                    SecureField("Password", text: $viewModel.password)
                        .autocorrectionDisabled()
                        .textContentType(.password)
-                       .textInputAutocapitalization(.never)
+                       .disableAutocapitalization()
                    SecureField("Confirm password", text: $viewModel.confirmedPassword)
                        .autocorrectionDisabled()
                        .textContentType(.password)
-                       .textInputAutocapitalization(.never)
+                       .disableAutocapitalization()
 
                    Button { viewModel.exportData(shouldUsePassword: true) } label: {
                        Text("Export", bundle: .module)
@@ -169,8 +165,13 @@ public struct SettingsView: View {
             DeleteAllDataView(mode: viewModel.getSyncMode())
                 .interactiveDismissDisabled()
         }
+        .sheet(isPresented: $showGroups) {
+            GroupsView()
+                .resizableSheet()
+        }
         #if os(macOS)
-        .frame(minWidth: 800, minHeight: 600)
+        .fontScaled()
+        .frame(minWidth: 300, idealWidth: 320, maxWidth: 360, minHeight: 440, idealHeight: 540)
         #endif
         .onDisappear {
             viewModel.emptyTempDirectory()
@@ -212,19 +213,6 @@ private extension SettingsView {
 
             SettingDivider()
 
-            #if os(iOS)
-            SettingRow(title: .localized("Sync via Proton", .module),
-                       subtitle: !viewModel.emailAddress.isEmpty ?
-                           .localized("Account: \(viewModel.emailAddress)", .module) : nil,
-                       trailingMode: .toggle(isOn: viewModel.syncEnabled,
-                                             onToggle: viewModel.toggleSync))
-                .toggleAccessibilityLabel(#localized("Sync between devices with Proton account",
-                                                     bundle: .module),
-                                          activateStatus(viewModel.syncEnabled))
-
-            SettingDivider()
-            #endif
-
             SettingRow(title: .localized("Biometric lock", .module),
                        trailingMode: .toggle(isOn: viewModel.biometricLock,
                                              onToggle: viewModel.toggleBioLock))
@@ -239,6 +227,7 @@ private extension SettingsView {
                 .toggleAccessibilityLabel(#localized("Hide codes", bundle: .module),
                                           activateStatus(viewModel.shouldHideCode))
 
+            #if os(iOS)
             if #available(iOS 18, *) {
                 SettingDivider()
                 SettingRow(title: .localized("iCloud sync", .module),
@@ -247,9 +236,7 @@ private extension SettingsView {
                     router.navigate(to: .iCloudSync)
                 }
             }
-        }
-        .onChange(of: viewModel.syncEnabled) {
-            viewModel.settingSheet = nil
+            #endif
         }
     }
 
@@ -333,6 +320,14 @@ private extension SettingsView {
 
     var dataSection: some View {
         SettingsSectionContainer(title: "MANAGE YOUR DATA") {
+            SettingRow(title: .localized("Groups", .module),
+                       subtitle: .localized("Organise your codes by purpose", .module),
+                       trailingMode: .detailChevronRight) {
+                showGroups = true
+            }
+
+            SettingDivider()
+
             SettingRow(title: .localized("Import", .module), onTap: { showImportOptions.toggle() })
 
             SettingDivider()
@@ -345,59 +340,9 @@ private extension SettingsView {
 
     var supportSection: some View {
         SettingsSectionContainer(title: "SUPPORT") {
-            SettingRow(title: .localized("Report an issue", .module)) {
-                open(urlString: AppConstants.CommonUrls.feedbackUrl)
-            }
-
-            SettingDivider()
-
             SettingRow(title: .localized("Logs", .module), onTap: { viewModel.settingSheet = .logs })
         }
     }
-
-    var discoverySection: some View {
-        SettingsSectionContainer(title: "DISCOVER PROTON") {
-            ForEach(viewModel.products, id: \.self) { product in
-                SettingRow(icon: .resource(product.logo),
-                           title: .verbatim(product.name),
-                           subtitle: .localized(product.description, .module),
-                           onTap: { open(urlString: product.finalUrl) })
-
-                if product != ProtonProduct.allCases.last {
-                    SettingDivider()
-                }
-            }
-        }
-    }
-
-    // swiftlint:disable line_length
-    var ratingSection: some View {
-        SettingsSectionContainer(title: "SPREAD THE WORD") {
-            if let referralUrl = AppConstants.AppStore.referralUrl {
-                ShareLink(item: referralUrl,
-                          subject: Text("The app that keeps your accounts safe", bundle: .module),
-                          message: Text("Hey there! I use this Authenticator app to protect my accounts from getting hacked. Really easy to set up. You should grab it too :)",
-                                        bundle: .module)) {
-                    SettingRow(icon: .resource(.appInfoSent),
-                               title: .localized("Tell a friend", .module),
-                               trailingMode: .detailChevronRight)
-                }
-                .buttonStyle(.plain)
-
-                SettingDivider()
-            }
-
-            SettingRow(icon: .resource(.appStarRating),
-                       title: .localized("Rate Proton Authenticator", .module),
-                       trailingMode: .detailChevronRight) {
-                if let reviewAppUrl = AppConstants.AppStore.reviewAppUrl {
-                    openURL(reviewAppUrl)
-                }
-            }
-        }
-    }
-
-    // swiftlint:enable line_length
 
     var deleteAllDataButton: some View {
         Button(action: {
@@ -443,11 +388,6 @@ private extension SettingsView {
 // MARK: - Utils
 
 private extension SettingsView {
-    func open(urlString: String) {
-        if let url = URL(string: urlString) {
-            openURL(url)
-        }
-    }
 }
 
 struct SettingDivider: View {
@@ -472,45 +412,6 @@ struct SettingDivider: View {
     SettingsView()
 }
 
-private extension ProtonProduct {
-    var logo: ImageResource {
-        switch self {
-        case .pass: .logoPass
-        case .vpn: .logoVPN
-        case .mail: .logoMail
-        case .drive: .logoDrive
-        case .calendar: .logoCalendar
-        }
-    }
-
-    var description: LocalizedStringKey {
-        switch self {
-        case .pass:
-            "Store strong, unique passwords to avoid identity theft and breaches."
-
-        case .vpn:
-            "Browse without being tracked and access blocked content."
-
-        case .mail:
-            "Protect your inbox from spam, tracking, and targeted ads."
-
-        case .drive:
-            "Give your precious photos and files the safe home they deserve."
-
-        case .calendar:
-            "Organize your schedule and keep your plans to yourself."
-        }
-    }
-
-    var finalUrl: String {
-        #if os(iOS)
-        iOSAppUrl
-        #else
-        homepageUrl
-        #endif
-    }
-}
-
 private extension Theme {
     var title: LocalizedStringKey {
         switch self {
@@ -529,10 +430,14 @@ private extension Theme {
 private extension View {
     @ViewBuilder
     func settingsListStyle() -> some View {
-        if #available(iOS 26, macOS 26, *) {
+        #if os(iOS)
+        if #available(iOS 26, *) {
             listStyle(.insetGrouped)
         } else {
             listStyle(.plain)
         }
+        #else
+        listStyle(.inset)
+        #endif
     }
 }

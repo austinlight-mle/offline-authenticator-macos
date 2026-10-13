@@ -1,3 +1,31 @@
+# Version 1.5.0 (community fork)
+- Renamed the app to Altosec Authenticator (bundle identifiers `me.altosec.*`, app group,
+  keychain service, iCloud container and backup file names) so it can be installed next to the
+  original app without conflicts; Proton remains the name of the optional sync service
+- Native macOS app: the Xcode project now builds for "My Mac" with a narrow, phone-like window
+  (420 pt wide by default, capped at 560 pt) that lists codes one per line; Debug builds are
+  signed to run locally so no Apple developer team is required
+- Groups: create, rename, recolor, reorder and delete groups, move codes between groups from
+  their menu, filter the list with the new group bar and pick a group when creating a code
+- Icons: 260+ bundled brand icons (Simple Icons, CC0) used offline for well known issuers, plus
+  per code icon overrides (brand icon, SF Symbol with color, or a picture from your files)
+- macOS shows onboarding inline instead of in a sheet (the sheet collapsed in the narrow window
+  and blocked Quit while presented)
+- Settings no longer shows Proton service items (Pass banner, Sync via Proton, Discover Proton,
+  Tell a friend / Rate, Report an issue); the macOS Settings sheet has a Close button and all
+  macOS sheets and the main window are narrower (window 340 pt by default, 300 to 480 pt)
+- New shield app icon for all platforms; the macOS window defaults to 370 x 550 pt and text uses
+  the native macOS text style sizes (with a slight width based scale) so sheets stay neat
+- Groups and icon overrides are stored locally next to the encrypted entries; the encrypted
+  entry format, Proton sync, backups and import/export are unchanged
+- macOS no longer uses the keychain (which asked for access at every launch of a locally signed
+  build): keys and small secrets are kept in an encrypted vault file in the app's sandbox
+  container, bound to the Mac's hardware UUID; existing keychain items are migrated once
+- Fixed the mangled `APP_VERSION_IDENTIFIER` / `IS_QA_BUILD` placeholders in the public export
+- Swift 6.4 (Xcode 27) compatibility: `SimpleToast` is vendored with an initialiser fix,
+  the scanner's corner shape is `nonisolated`, and the
+  macOS Info.plist disables Go async preemption to avoid a sporadic launch abort in GoLibs
+
 # Version 1.4.4
 - Upgraded Rust library from 1.3.0 to 1.7.2
 - Disabled VoiceOver when the app is locked
@@ -53,7 +81,7 @@ Improvements:
 
 # Version 1.2.0
 Secure data export: you can now protect your exported data with a password for enhanced security.
-Apple Watch complications: quickly access Proton Authenticator with four new complication options.
+Apple Watch complications: quickly access Altosec Authenticator with four new complication options.
 
 Improvements:
 - Fix for an issue where scanning a Google QR code occasionally created duplicate entries

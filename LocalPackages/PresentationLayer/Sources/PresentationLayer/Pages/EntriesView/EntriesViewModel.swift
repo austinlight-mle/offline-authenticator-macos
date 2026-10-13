@@ -1,22 +1,22 @@
 //
 // EntriesViewModel.swift
-// Proton Authenticator - Created on 10/02/2025.
+// Altosec Authenticator - Created on 10/02/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
-// This file is part of Proton Authenticator.
+// This file is part of Altosec Authenticator.
 //
-// Proton Authenticator is free software: you can redistribute it and/or modify
+// Altosec Authenticator is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Proton Authenticator is distributed in the hope that it will be useful,
+// Altosec Authenticator is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Proton Authenticator. If not, see https://www.gnu.org/licenses/.
+// along with Altosec Authenticator. If not, see https://www.gnu.org/licenses/.
 //
 
 import Combine
@@ -68,6 +68,48 @@ final class EntriesViewModel {
     var sortOption: SortOption {
         settingsService.sortOption
     }
+
+    /// User defined groups, in display order.
+    var groups: [EntryGroup] {
+        entryDataService.groups
+    }
+
+    /// Currently selected group filter. `nil` shows every entry.
+    var selectedGroupId: String? {
+        didSet {
+            guard selectedGroupId != oldValue else { return }
+            if let selectedGroupId {
+                kSharedUserDefaults.set(selectedGroupId, forKey: Self.selectedGroupKey)
+            } else {
+                kSharedUserDefaults.removeObject(forKey: Self.selectedGroupKey)
+            }
+            updateEntries()
+        }
+    }
+
+    var selectedGroup: EntryGroup? {
+        guard let selectedGroupId else { return nil }
+        return groups.first { $0.id == selectedGroupId }
+    }
+
+    var showGroupBar: Bool {
+        !groups.isEmpty && !noEntries
+    }
+
+    /// Number of entries per group (`nil` key = all entries), ignoring the current search.
+    var groupCounts: [String?: Int] {
+        var counts = [String?: Int]()
+        let all = entryDataService.dataState.data ?? []
+        counts[String?.none] = all.count
+        for entry in all {
+            if let groupId = entry.groupId {
+                counts[groupId, default: 0] += 1
+            }
+        }
+        return counts
+    }
+
+    private static let selectedGroupKey = "SelectedGroupId"
 
     var query = "" {
         didSet {
@@ -166,6 +208,8 @@ final class EntriesViewModel {
     private(set) var deleteTask: Task<Void, Never>?
 
     init() {
+        selectedGroupId = kSharedUserDefaults.string(forKey: Self.selectedGroupKey)
+
         searchTextStream
             .dropFirst()
             .removeDuplicates()
@@ -221,6 +265,12 @@ final class EntriesViewModel {
         guard offset != targetIndex else {
             return
         }
+        // The list may be filtered (search or group), so translate the displayed positions into
+        // positions of the complete data set before persisting the new order.
+        let (fullSource, fullTarget) = fullDataPositions(displayedSource: offset, displayedTarget: targetIndex)
+        guard fullSource != fullTarget else {
+            return
+        }
         moveItemTask = Task { [weak self] in
             guard let self else { return }
             defer {
@@ -228,7 +278,7 @@ final class EntriesViewModel {
                 reorderingEntries = nil
             }
             do {
-                try await entryDataService.reorderItem(from: offset, to: targetIndex)
+                try await entryDataService.reorderItem(from: fullSource, to: fullTarget)
                 await requestForReview()
             } catch {
                 handle(error)
@@ -265,6 +315,21 @@ final class EntriesViewModel {
 
     func cleanSearch() {
         query = ""
+    }
+
+    func selectGroup(_ groupId: String?) {
+        selectedGroupId = groupId
+    }
+
+    func moveToGroup(_ entry: EntryUiModel, groupId: String?) {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await entryDataService.setGroup(groupId, for: [entry.id])
+            } catch {
+                handle(error)
+            }
+        }
     }
 }
 
@@ -464,14 +529,36 @@ private extension EntriesViewModel {
         }
     }
 
-    func updateEntries() {
-        if let results = searchResults {
-            entries = results.sorted(by: settingsService.sortOption)
-        } else if let data = entryDataService.dataState.data {
-            entries = data.sorted(by: settingsService.sortOption)
-        } else {
-            entries = []
+    func fullDataPositions(displayedSource: Int, displayedTarget: Int) -> (source: Int, target: Int) {
+        guard let all = entryDataService.dataState.data,
+              all.count != entries.count,
+              let movedId = entries[safeIndex: displayedSource]?.id,
+              let targetId = entries[safeIndex: displayedTarget]?.id,
+              let fullSource = all.firstIndex(where: { $0.id == movedId }),
+              let fullTarget = all.firstIndex(where: { $0.id == targetId }) else {
+            return (displayedSource, displayedTarget)
         }
+        return (fullSource, fullTarget)
+    }
+
+    func updateEntries() {
+        if let selectedGroupId, !groups.contains(where: { $0.id == selectedGroupId }) {
+            // The selected group was deleted: fall back to showing everything.
+            self.selectedGroupId = nil
+            return
+        }
+
+        let base: [EntryUiModel] = if let results = searchResults {
+            results
+        } else {
+            entryDataService.dataState.data ?? []
+        }
+        let filtered = if let selectedGroupId {
+            base.filter { $0.groupId == selectedGroupId }
+        } else {
+            base
+        }
+        entries = filtered.sorted(by: settingsService.sortOption)
 
         if let reorderingEntries, !reorderingEntries.hasSameMembers(as: entries) {
             self.reorderingEntries = nil

@@ -1,22 +1,22 @@
 //
 // Import+ViewModifier.swift
-// Proton Authenticator - Created on 21/03/2025.
+// Altosec Authenticator - Created on 21/03/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
-// This file is part of Proton Authenticator.
+// This file is part of Altosec Authenticator.
 //
-// Proton Authenticator is free software: you can redistribute it and/or modify
+// Altosec Authenticator is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Proton Authenticator is distributed in the hope that it will be useful,
+// Altosec Authenticator is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Proton Authenticator. If not, see https://www.gnu.org/licenses/.
+// along with Altosec Authenticator. If not, see https://www.gnu.org/licenses/.
 
 import Combine
 import CommonUtilities
@@ -130,6 +130,7 @@ struct ImportingServiceModifier: ViewModifier {
     func handle(_ option: GoogleImportType) {
         switch option {
         case .scanQrCode:
+            #if os(iOS)
             let status = AVCaptureDevice.authorizationStatus(for: .video)
             switch status {
             case .authorized, .notDetermined:
@@ -141,6 +142,9 @@ struct ImportingServiceModifier: ViewModifier {
             @unknown default:
                 showScanner.toggle()
             }
+            #else
+            showPhotosPicker.toggle()
+            #endif
 
         case .pickPhoto:
             showPhotosPicker.toggle()
@@ -150,6 +154,7 @@ struct ImportingServiceModifier: ViewModifier {
         }
     }
 
+    #if os(iOS)
     @ViewBuilder
     func scannerView() -> some View {
         if viewModel.unsupportedScanning {
@@ -213,6 +218,7 @@ struct ImportingServiceModifier: ViewModifier {
                 }
         }
     }
+    #endif
 
     func passwordView() -> some View {
         VStack {
@@ -267,10 +273,14 @@ struct ImportingServiceModifier: ViewModifier {
 
                 Spacer()
             }
-            .padding(.horizontal, 36)
+            .padding(.horizontal, AppConstants.isMacOS ? 20 : 36)
         }
         .defaultFocus($focusedField, .field)
         .fullScreenMainBackground()
+        #if os(macOS)
+        .fontScaled()
+        .frame(minWidth: 300, idealWidth: 320, maxWidth: 360, minHeight: 380, idealHeight: 420)
+        #endif
         .alert("Wrong password",
                isPresented: $viewModel.showWrongPasswordAlert,
                actions: {
@@ -348,9 +358,11 @@ private final class ImportViewModel: ObservableObject {
     private var hapticsManager
     #endif
 
+    #if os(iOS)
     @ObservationIgnored
     @LazyInjected(\ServiceContainer.cameraManager)
     private var cameraManager
+    #endif
 
     @ObservationIgnored
     @LazyInjected(\ServiceContainer.settingsService)
@@ -375,8 +387,10 @@ private final class ImportViewModel: ObservableObject {
     @ObservationIgnored
     private let onComplete: (@MainActor () -> Void)?
 
+    #if os(iOS)
     @ObservationIgnored
     let scanResultStream = PassthroughSubject<Result<ScanResult, any Error>, Never>()
+    #endif
 
     @ObservationIgnored
     private var processTask: Task<Void, Never>?
@@ -395,9 +409,11 @@ private final class ImportViewModel: ObservableObject {
         appSettings.unsupportedScanning
     }
 
+    #if os(iOS)
     var cameraSession: AVCaptureSession {
         cameraManager.session
     }
+    #endif
 
     init(context: ImportingContext,
          onComplete: (@MainActor () -> Void)?) {
@@ -413,6 +429,7 @@ private final class ImportViewModel: ObservableObject {
             }
             .store(in: &cancellables)
 
+        #if os(iOS)
         cameraManager.isTakingPhoto
             .sink { [weak self] value in
                 guard let self else { return }
@@ -427,7 +444,9 @@ private final class ImportViewModel: ObservableObject {
                 parseCapturedPhoto(photo)
             }
             .store(in: &cancellables)
+        #endif
 
+        #if os(iOS)
         scanResultStream
             // Debounce to mitigate duplicated results because camera scanning is too fast
             .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main, options: nil)
@@ -436,6 +455,7 @@ private final class ImportViewModel: ObservableObject {
                 processPayload(results: result)
             }
             .store(in: &cancellables)
+        #endif
     }
 
     func addContext() {
@@ -621,6 +641,7 @@ private final class ImportViewModel: ObservableObject {
         #endif
     }
 
+    #if os(iOS)
     func alertNoCameraPermission() {
         let config = AlertConfiguration.noCameraAccess()
         showAlert(config)
@@ -646,6 +667,7 @@ private final class ImportViewModel: ObservableObject {
             showError(error.localizedDescription)
         }
     }
+    #endif
 }
 
 private extension ImportViewModel {
@@ -665,6 +687,7 @@ private extension ImportViewModel {
         showError(message)
     }
 
+    #if os(iOS)
     func parseCapturedPhoto(_ photo: AVCapturePhoto) {
         guard parseTask == nil, importingContexts.value.last == context else { return }
         parseTask = Task { [weak self] in
@@ -684,6 +707,7 @@ private extension ImportViewModel {
             }
         }
     }
+    #endif
 
     func showError(_ message: String) {
         let config = AlertConfiguration(title: "An error occurred",
@@ -751,7 +775,7 @@ private extension ImportOption {
             "LastPass Authenticator"
 
         case .protonAuthenticator:
-            "Proton Authenticator"
+            "Altosec / Proton Authenticator"
 
         case .protonPass:
             "Proton Pass"
@@ -897,7 +921,7 @@ private extension GoogleImportType {
 }
 
 extension UTType {
-    static let twoFAS = UTType(exportedAs: "me.proton.2fas")
+    static let twoFAS = UTType(exportedAs: "me.altosec.2fas")
 }
 
 // swiftlint:disable line_length
@@ -949,6 +973,10 @@ private struct ExplanationView: View {
         }
     }
 
+    private var iconSide: CGFloat {
+        AppConstants.isMacOS ? 56 : 74
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             if #unavailable(iOS 26, macOS 26) {
@@ -968,10 +996,10 @@ private struct ExplanationView: View {
             }
 
             if option.canExport {
-                HStack(spacing: 25) {
+                HStack(spacing: AppConstants.isMacOS ? 16 : 25) {
                     option.icon
                         .resizable()
-                        .frame(width: 74, height: 74)
+                        .frame(width: iconSide, height: iconSide)
                     Image(.arrow)
                         .resizable()
                         .scaledToFit()
@@ -980,13 +1008,13 @@ private struct ExplanationView: View {
 
                     Image(.protonAuthIcon)
                         .resizable()
-                        .frame(width: 74, height: 74)
+                        .frame(width: iconSide, height: iconSide)
                         .accessibilityHidden(true)
 
                     Spacer()
                 }
-                .frame(height: 170)
-                .padding(.horizontal, 32)
+                .frame(height: AppConstants.isMacOS ? 110 : 170)
+                .padding(.horizontal, sidePadding)
             } else {
                 HStack {
                     Spacer()
@@ -1012,23 +1040,16 @@ private struct ExplanationView: View {
                 .foregroundStyle(.textNorm)
                 .multilineTextAlignment(option.canExport ? .leading : .center)
                 .frame(maxWidth: .infinity, alignment: option.canExport ? .leading : .center)
-                .padding(.horizontal, 32)
-            Text(option.explanation, bundle: .module) // ignore:missing_bundle
-                .dynamicFont(size: 20, textStyle: .title3)
-                .foregroundStyle(.textWeak)
-                .multilineTextAlignment(option.canExport ? .leading : .center)
-                .frame(maxWidth: .infinity, alignment: option.canExport ? .leading : .center)
-                .padding(.horizontal, 32)
-
-            if option.canExport {
-                if let url = URL(string: "https://proton.me/support/contact") {
-                    Link(destination: url) {
-                        Text("Need more help?", bundle: .module)
-                            .dynamicFont(size: 20, textStyle: .title3)
-                    }
-                    .padding(.horizontal, 32)
-                }
+                .padding(.horizontal, sidePadding)
+            ScrollView {
+                Text(option.explanation, bundle: .module) // ignore:missing_bundle
+                    .dynamicFont(size: 20, textStyle: .title3)
+                    .foregroundStyle(.textWeak)
+                    .multilineTextAlignment(option.canExport ? .leading : .center)
+                    .frame(maxWidth: .infinity, alignment: option.canExport ? .leading : .center)
+                    .padding(.horizontal, sidePadding)
             }
+            .scrollIndicators(.hidden)
 
             Spacer()
 
@@ -1037,22 +1058,31 @@ private struct ExplanationView: View {
                     handle(option)
                     dismiss()
                 })
-                .padding(.bottom, 45)
-                .padding(.horizontal, 32)
+                .padding(.bottom, AppConstants.isMacOS ? 20 : 45)
+                .padding(.horizontal, sidePadding)
             }
         }
         .fullScreenMainBackground()
         .toolbar {
             if #available(iOS 26, macOS 26, *) {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .leadingBarItem) {
                     Button(action: dismiss.callAsFunction) {
                         Image(systemName: "xmark")
                             .accessibility(label: Text("Close", bundle: .module))
                     }
+                    .keyboardShortcut(.escape, modifiers: [])
                 }
             }
         }
         .navigationStackEmbeded()
+        #if os(macOS)
+        .fontScaled()
+        .frame(minWidth: 300, idealWidth: 320, maxWidth: 360, minHeight: 440, idealHeight: 520)
+        #endif
+    }
+
+    private var sidePadding: CGFloat {
+        AppConstants.isMacOS ? 20 : 32
     }
 }
 
@@ -1078,8 +1108,9 @@ private struct ImportView: View {
                 }
             }
 
-            List {
-                VStack(alignment: .leading, spacing: 16) {
+            ScrollView {
+                LazyVStack(alignment: .leading, spacing: 0) {
+                VStack(alignment: .leading, spacing: AppConstants.isMacOS ? 6 : 16) {
                     Text("Import codes", bundle: .module)
                         .foregroundStyle(.textNorm)
                         .dynamicFont(size: 28, textStyle: .title1, weight: .bold)
@@ -1088,9 +1119,7 @@ private struct ImportView: View {
                         .foregroundStyle(.textWeak)
                         .dynamicFont(size: 20, textStyle: .title3)
                 }
-                .listRowInsets(EdgeInsets())
-                .listRowBackground(Color.clear)
-                .listRowSeparator(.hidden)
+                .padding(.bottom, AppConstants.isMacOS ? 8 : 16)
 
                 ForEach(ImportOption.allCasesSorted, id: \.self) { option in
                     Button {
@@ -1104,6 +1133,8 @@ private struct ImportView: View {
                                 .cornerRadius(8)
                             Text(verbatim: option.title)
                                 .dynamicFont(size: 17, textStyle: .body)
+                                .lineLimit(2)
+                                .minimumScaleFactor(0.8)
                                 .foregroundStyle(.textNorm)
                             Spacer()
                             if !option.canExport {
@@ -1114,29 +1145,33 @@ private struct ImportView: View {
                                     .accessibilityHidden(true)
                             }
                         }
-                        .padding(.vertical, 24)
+                        .padding(.vertical, AppConstants.isMacOS ? 8 : 24)
+                        .contentShape(.rect)
                     }
-                    .listRowInsets(EdgeInsets())
-                    .listRowBackground(Color.clear)
+                    .buttonStyle(.plain)
                 }
+                }
+                .padding(.horizontal, AppConstants.isMacOS ? 16 : 32)
             }
-            .scrollContentBackground(.hidden)
             .scrollIndicators(.hidden)
-            .listStyle(.plain)
-            .padding(.horizontal, 32)
         }
         .fullScreenMainBackground()
         .toolbar {
             if #available(iOS 26, macOS 26, *) {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .leadingBarItem) {
                     Button(action: dismiss.callAsFunction) {
                         Image(systemName: "xmark")
                             .accessibility(label: Text("Close", bundle: .module))
                     }
+                    .keyboardShortcut(.escape, modifiers: [])
                 }
             }
         }
         .navigationStackEmbeded()
+        #if os(macOS)
+        .fontScaled()
+        .frame(minWidth: 300, idealWidth: 320, maxWidth: 360, minHeight: 440, idealHeight: 520)
+        #endif
     }
 }
 
