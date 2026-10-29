@@ -12,9 +12,10 @@ ROOT="$(cd "$(dirname "$0")" && pwd)"
 DERIVED_DATA="$ROOT/build/DerivedData"
 DIST="$ROOT/dist"
 APP_NAME="Altosec Authenticator.app"
+VERSION="$(tr -d '[:space:]' < "$ROOT/VERSION")"
 
 cd "$ROOT"
-echo "Building Authenticator ($CONFIGURATION) for macOS..."
+echo "Building Authenticator $VERSION ($CONFIGURATION) for macOS..."
 xcodebuild \
     -project Authenticator.xcodeproj \
     -scheme Authenticator \
@@ -23,6 +24,7 @@ xcodebuild \
     -derivedDataPath "$DERIVED_DATA" \
     -skipPackagePluginValidation \
     -skipMacroValidation \
+    MARKETING_VERSION="$VERSION" \
     build 2>&1 | grep -E "error:|warning: .*Authenticator/|BUILD " || true
 STATUS=${PIPESTATUS[0]}
 

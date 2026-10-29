@@ -1308,13 +1308,14 @@
 				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = "Authenticator/App/Authenticator-macOS.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "3rd Party Mac Developer Application";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				"CODE_SIGN_IDENTITY[sdk=xros*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Authenticator/App/Preview Content\"";
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -1345,7 +1346,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Altosec Authenticator Distribution";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "Altosec Authenticator macOS Distribution";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=xros*]" = "Altosec Authenticator Distribution";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;

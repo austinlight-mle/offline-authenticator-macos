@@ -30,6 +30,10 @@
   build): keys and small secrets are kept in an encrypted vault file in the app's sandbox
   container, bound to the Mac's hardware UUID; existing keychain items are migrated once
 - Fixed the mangled `APP_VERSION_IDENTIFIER` / `IS_QA_BUILD` placeholders in the public export
+- GitHub Actions release workflow: each push to `main` builds the macOS app (dmg, zip) and an
+  unsigned iOS ipa with the version from the `VERSION` file and publishes them on the release
+  tagged `v<VERSION>`; `build-macos.sh` stamps the same version
+- Fixed the Rust package download script, whose unzip path had been renamed by mistake
 - Swift 6.4 (Xcode 27) compatibility: `SimpleToast` is vendored with an initialiser fix,
   the scanner's corner shape is `nonisolated`, and the
   macOS Info.plist disables Go async preemption to avoid a sporadic launch abort in GoLibs

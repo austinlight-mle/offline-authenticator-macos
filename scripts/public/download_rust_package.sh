@@ -51,7 +51,7 @@ unzip -o $ARTIFACT_PATH -d $TMP_DIR_PATH
 rm -rf $LOCAL_PACKAGE_PATH
 mkdir $LOCAL_PACKAGE_PATH
 
-UNZIPPED_PACKAGE_PATH="${TMP_DIR_PATH}/builds/proton/clients/pass/proton-pass-common/altosec-authenticator-mobile/iOS/AuthenticatorRustCore/*"
+UNZIPPED_PACKAGE_PATH="${TMP_DIR_PATH}/builds/proton/clients/pass/proton-pass-common/proton-authenticator-mobile/iOS/AuthenticatorRustCore/*"
 
 echo -e "\nCopying unzipped package to local package directory"
 mv -f $UNZIPPED_PACKAGE_PATH $LOCAL_PACKAGE_PATH

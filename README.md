@@ -46,6 +46,23 @@ Or from the terminal, which leaves the app in `dist/Altosec Authenticator.app`:
 The Rust core (`LocalPackages/AuthenticatorRustCore`) is downloaded by the scheme's pre-build
 script and already ships a `macos-arm64` slice.
 
+Releases (CI)
+-------------
+
+Every push to `main` runs `.github/workflows/release.yml` on a GitHub macOS runner. It reads the
+version from the `VERSION` file, downloads the Rust core, builds the app and publishes (or
+updates) the GitHub Release tagged `v<VERSION>` with:
+
+* `Altosec-Authenticator-<VERSION>-macOS.dmg` and `.zip`: the macOS app, signed ad hoc (not
+  notarized, so open it once with right click > Open).
+* `Altosec-Authenticator-<VERSION>-iOS-unsigned.ipa`: the iOS app without a signature, for
+  sideloading tools (AltStore, Sideloadly, ...) that sign it with your own Apple ID.
+* `SHA256SUMS-<VERSION>.txt`.
+
+Bump `VERSION` before pushing to get a new release; pushing again with the same version replaces
+the assets of the existing release. The build number is the workflow run number. Signed App Store
+or TestFlight builds need an Apple developer team and are not produced by this workflow.
+
 Notes for locally signed builds:
 
 * The macOS app does not use the keychain. Every *Sign to Run Locally* build has a new ad-hoc
