@@ -26,6 +26,12 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
   - fastlane
   - misc/*
   - LocalPackages/**/Package.swift
+  - LocalPackages/AuthenticatorRustCore
+  - LocalPackages/SimpleToast
+  - build
+  - dist
+  - tmp
+  - .build
   - "**/.build"
   - .build
   - DerivedData

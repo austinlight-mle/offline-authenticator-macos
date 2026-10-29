@@ -1,6 +1,6 @@
 # https://github.com/nicklockwood/SwiftFormat/blob/master/Rules.md
 
---exclude AuthenticatorTests, AuthenticatorUITests, Package.swift, fastlane/** , LocalPackages/DataLayer/Tests, LocalPackages/DomainLayer/Tests, LocalPackages/Models/Tests, LocalPackages/PresentationLayer/Tests, misc/**, **/Package.swift, LocalPackages/AuthenticatorRustCore
+--exclude AuthenticatorTests, AuthenticatorUITests, Package.swift, fastlane/** , LocalPackages/DataLayer/Tests, LocalPackages/DomainLayer/Tests, LocalPackages/Models/Tests, LocalPackages/PresentationLayer/Tests, misc/**, **/Package.swift, LocalPackages/AuthenticatorRustCore, LocalPackages/SimpleToast, build, dist, tmp, .build
 
 # format options
 

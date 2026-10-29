@@ -14,8 +14,20 @@ DIST="$ROOT/dist"
 APP_NAME="Altosec Authenticator.app"
 VERSION="$(tr -d '[:space:]' < "$ROOT/VERSION")"
 
+BUILT_APP="$DERIVED_DATA/Build/Products/$CONFIGURATION/Authenticator.app"
+LOG="$ROOT/build/logs/xcodebuild-macos-$CONFIGURATION.log"
+
 cd "$ROOT"
+if pgrep -x xcodebuild >/dev/null; then
+    echo "Another xcodebuild is running; wait for it to finish (concurrent builds lock the build database)." >&2
+    exit 1
+fi
+# Remove the previous product so a failed build can never ship a stale app.
+rm -rf "$BUILT_APP"
+mkdir -p "$(dirname "$LOG")"
+
 echo "Building Authenticator $VERSION ($CONFIGURATION) for macOS..."
+STATUS=0
 xcodebuild \
     -project Authenticator.xcodeproj \
     -scheme Authenticator \
@@ -25,12 +37,11 @@ xcodebuild \
     -skipPackagePluginValidation \
     -skipMacroValidation \
     MARKETING_VERSION="$VERSION" \
-    build 2>&1 | grep -E "error:|warning: .*Authenticator/|BUILD " || true
-STATUS=${PIPESTATUS[0]}
+    build > "$LOG" 2>&1 || STATUS=$?
+grep -E "error:|warning: .*Authenticator/|BUILD " "$LOG" | grep -v "CoreSimulator is out of date" || true
 
-BUILT_APP="$DERIVED_DATA/Build/Products/$CONFIGURATION/Authenticator.app"
-if [ "$STATUS" -ne 0 ] || [ ! -d "$BUILT_APP" ]; then
-    echo "Build failed (xcodebuild exit code $STATUS)" >&2
+if [ "$STATUS" -ne 0 ] || [ ! -x "$BUILT_APP/Contents/MacOS/Authenticator" ]; then
+    echo "Build failed (xcodebuild exit code $STATUS). Full log: $LOG" >&2
     exit 1
 fi
 

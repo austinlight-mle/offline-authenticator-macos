@@ -34,6 +34,11 @@
   unsigned iOS ipa with the version from the `VERSION` file and publishes them on the release
   tagged `v<VERSION>`; `build-macos.sh` stamps the same version
 - Fixed the Rust package download script, whose unzip path had been renamed by mistake
+- The SwiftFormat and SwiftLint build phases are skipped on CI and ignore `build/`, `dist/` and
+  vendored packages (on GitHub runners SwiftFormat rewrote the cloned ProtonCore sources and
+  broke the release build); the workflow now fails on build errors and validates the bundles
+- macOS builds are arm64 only (the Rust core has no x86_64 macOS slice, so Release builds,
+  which compile every architecture, failed to link)
 - Swift 6.4 (Xcode 27) compatibility: `SimpleToast` is vendored with an initialiser fix,
   the scanner's corner shape is `nonisolated`, and the
   macOS Info.plist disables Go async preemption to avoid a sporadic launch abort in GoLibs
