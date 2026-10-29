@@ -69,6 +69,10 @@ public protocol EntryDataServiceProtocol: Sendable, Observable {
     func importEntries(from sources: [TwofaImportSource]) async throws -> Int
     func stopTotpGenerator()
     func startTotpGenerator()
+    /// Recomputes every code from the wall clock right now, without waiting for the generator.
+    func refreshCodesNow()
+    /// Code for a single entry computed from the wall clock at call time.
+    func currentCode(for entry: Entry) throws -> Code
     func unsyncAllEntries() async throws
 }
 
@@ -132,6 +136,16 @@ public final class EntryDataService: EntryDataServiceProtocol {
     private var totpGenerator: any TotpGeneratorProtocol
     @ObservationIgnored
     private var entryUpdateTask: Task<Void, Never>?
+    /// Serialises start/stop requests to the generator actor so a restart can never be overtaken
+    /// by an earlier stop (which left the codes frozen while the countdown kept running).
+    @ObservationIgnored
+    private var generatorControlTask: Task<Void, Never>?
+    @ObservationIgnored
+    private var codeWatchdogTask: Task<Void, Never>?
+    @ObservationIgnored
+    private var codesLastEmittedAt: Date = .distantPast
+    @ObservationIgnored
+    private var generatorShouldRun = false
     @ObservationIgnored
     private var fullRefreshTask: Task<Void, Never>?
     @ObservationIgnored
@@ -191,6 +205,7 @@ public final class EntryDataService: EntryDataServiceProtocol {
             .compactMap(\.self)
             .sink { [weak self] codes in
                 guard let self else { return }
+                codesLastEmittedAt = .now
                 updateCodes(newCodes: codes)
             }
             .store(in: &cancellables)
@@ -531,9 +546,13 @@ public extension EntryDataService {
 
     func stopTotpGenerator() {
         log(.debug, "Stopping TOTP generator")
+        generatorShouldRun = false
         entryUpdateTask?.cancel()
         entryUpdateTask = nil
-        Task {
+        codeWatchdogTask?.cancel()
+        codeWatchdogTask = nil
+        enqueueGeneratorOperation { [weak self] in
+            guard let self else { return }
             await totpGenerator.stopUpdating()
         }
     }
@@ -542,7 +561,28 @@ public extension EntryDataService {
         guard let entries = dataState.data?.map(\.orderedEntry.entry) else { return }
 
         log(.info, "Starting TOTP generator")
+        // The generator was paused for a while: show correct codes immediately instead of
+        // waiting for its first emission.
+        refreshCodesNow()
         startUpdatingTotpCode(entries)
+    }
+
+    func refreshCodesNow() {
+        guard let entries = dataState.data?.map(\.orderedEntry.entry), !entries.isEmpty else { return }
+        do {
+            let codes = try repository.generateCodes(entries: entries)
+            codesLastEmittedAt = .now
+            updateCodes(newCodes: codes)
+        } catch {
+            log(.error, "Failed to refresh codes: \(error)")
+        }
+    }
+
+    func currentCode(for entry: Entry) throws -> Code {
+        guard let code = try repository.generateCodes(entries: [entry]).first else {
+            throw AuthError.generic(.missingGeneratedCodes(codeCount: 0, entryCount: 1))
+        }
+        return code
     }
 }
 
@@ -550,14 +590,56 @@ private extension EntryDataService {
     func startUpdatingTotpCode(_ entries: [Entry]) {
         log(.debug, "Starting updating TOTP codes for \(entries.count) entries")
 
+        generatorShouldRun = true
         entryUpdateTask?.cancel()
-        entryUpdateTask = Task { [weak self] in
+        entryUpdateTask = enqueueGeneratorOperation { [weak self] in
             guard let self else { return }
             do {
                 try await totpGenerator.startTotpCodeUpdate(entries)
                 log(.debug, "TOTP code generator started for \(entries.count) entries")
             } catch {
                 log(.error, "Failed to start TOTP generator: \(error)")
+            }
+        }
+        startCodeWatchdog(periods: entries.map(\.period))
+    }
+
+    /// Runs `operation` after every previously enqueued generator operation has finished.
+    @discardableResult
+    func enqueueGeneratorOperation(_ operation: @escaping @MainActor () async -> Void) -> Task<Void, Never> {
+        let previous = generatorControlTask
+        let task = Task { @MainActor in
+            await previous?.value
+            await operation()
+        }
+        generatorControlTask = task
+        return task
+    }
+
+    /// Safety net for the push based generator: shortly after every period boundary, check that
+    /// new codes arrived. If they did not (throttled thread, lost restart, ...), recompute them from
+    /// the wall clock and restart the generator.
+    func startCodeWatchdog(periods: [Int]) {
+        codeWatchdogTask?.cancel()
+        let period = TimeInterval(periods.filter { $0 > 0 }.min() ?? 30)
+        codeWatchdogTask = Task { [weak self] in
+            while !Task.isCancelled {
+                let now = Date.now.timeIntervalSince1970
+                let boundary = (now / period).rounded(.down) * period + period
+                let wait = boundary - now + 0.6
+                try? await Task.sleep(for: .seconds(wait))
+                guard !Task.isCancelled, let self, generatorShouldRun else { return }
+                if codesLastEmittedAt.timeIntervalSince1970 < boundary {
+                    log(.warning, "No TOTP update after period boundary, refreshing from the clock")
+                    refreshCodesNow()
+                    if let entries = dataState.data?.map(\.orderedEntry.entry) {
+                        entryUpdateTask?.cancel()
+                        entryUpdateTask = enqueueGeneratorOperation { [weak self] in
+                            guard let self else { return }
+                            try? await totpGenerator.startTotpCodeUpdate(entries)
+                        }
+                    }
+                }
             }
         }
     }

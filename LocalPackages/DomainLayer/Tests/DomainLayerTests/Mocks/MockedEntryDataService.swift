@@ -91,6 +91,12 @@ final class MockedEntryDataService: EntryDataServiceProtocol {
     func stopTotpGenerator() {}
     
     func startTotpGenerator() {}
+
+    func refreshCodesNow() {}
+
+    func currentCode(for entry: Entry) throws -> Code {
+        Code(current: "", next: "", entry: entry)
+    }
     
     func unsyncAllEntries() async throws {}
     

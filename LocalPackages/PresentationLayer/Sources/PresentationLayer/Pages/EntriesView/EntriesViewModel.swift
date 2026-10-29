@@ -361,7 +361,9 @@ extension EntriesViewModel {
             return
         }
         animatingEntry = entryAction
-        let code = entryAction.entryUiModel.code
+        // Always copy a code computed right now: the cell may hold a value from an earlier emission.
+        let code = (try? entryDataService.currentCode(for: entryAction.entryUiModel.orderedEntry.entry))
+            ?? entryAction.entryUiModel.code
         let codeValue = entryAction.isCurrentCodeCopyAction ? code.current : code.next
         assert(!codeValue.isEmpty, "Code should not be empty")
         copyTextToClipboard(codeValue)
@@ -458,6 +460,10 @@ extension EntriesViewModel {
 
     func refreshEntries() {
         updateEntries()
+    }
+
+    func refreshCodesNow() {
+        entryDataService.refreshCodesNow()
     }
 }
 

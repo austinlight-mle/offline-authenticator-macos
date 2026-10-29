@@ -177,6 +177,7 @@ public struct EntriesView: View {
                                 viewModel.toggleCodeRefresh(false)
                             }
                         }
+                        viewModel.refreshCodesNow()
                         viewModel.reloadDataOnForeground()
                         viewModel.showICloudDisablePromptIfNeeded()
 

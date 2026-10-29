@@ -14,6 +14,11 @@
   and blocked Quit while presented)
 - Biometric lock on macOS: the lock screen now replaces the code list (and its toolbar) until
   Touch ID succeeds, with an Unlock button to retry, and every new launch starts locked
+- Codes could stay frozen after a pause/resume of the generator (its stop and restart were two
+  unordered tasks, so a restart could be overtaken by the earlier stop). Generator control is now
+  serialised, a watchdog recomputes codes from the clock if an update is missed after a period
+  boundary, codes are refreshed when the app becomes active, and copying always uses a code
+  computed at that moment
 - Settings no longer shows Proton service items (Pass banner, Sync via Proton, Discover Proton,
   Tell a friend / Rate, Report an issue); the macOS Settings sheet has a Close button and all
   macOS sheets and the main window are narrower (window 340 pt by default, 300 to 480 pt)
