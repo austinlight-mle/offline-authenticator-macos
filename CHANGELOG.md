@@ -22,7 +22,9 @@
 - Settings no longer shows Proton service items (Pass banner, Sync via Proton, Discover Proton,
   Tell a friend / Rate, Report an issue); the macOS Settings sheet has a Close button and all
   macOS sheets and the main window are narrower (window 340 pt by default, 300 to 480 pt)
-- New shield app icon for all platforms; the macOS window defaults to 370 x 550 pt and text uses
+- New shield app icon for all platforms, including an Icon Composer `.icon` (blue fill, white
+  lock glyph) so macOS 26 and iOS 26 render it natively instead of boxing the legacy bitmap;
+  the macOS window defaults to 370 x 550 pt and text uses
   the native macOS text style sizes (with a slight width based scale) so sheets stay neat
 - Groups and icon overrides are stored locally next to the encrypted entries; the encrypted
   entry format, Proton sync, backups and import/export are unchanged
